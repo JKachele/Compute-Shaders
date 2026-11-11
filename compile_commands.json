@@ -1,0 +1,38 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-std=c11",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wno-unused-parameter",
+      "-Wno-unused-variable",
+      "-Ilib/cglm/include",
+      "-Ilib/glad/include",
+      "-Ilib/glfw/include",
+      "-Ilib/stb",
+      "-o",
+      "build/src/main.c.o",
+      "src/main.c"
+    ],
+    "directory": "/home/e454984/Programing/CProjects/Compute-Shaders",
+    "file": "/home/e454984/Programing/CProjects/Compute-Shaders/src/main.c",
+    "output": "/home/e454984/Programing/CProjects/Compute-Shaders/build/src/main.c.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "src/glad.o",
+      "src/glad.c"
+    ],
+    "directory": "/home/e454984/Programing/CProjects/Compute-Shaders/lib/glad",
+    "file": "/home/e454984/Programing/CProjects/Compute-Shaders/lib/glad/src/glad.c",
+    "output": "/home/e454984/Programing/CProjects/Compute-Shaders/lib/glad/src/glad.o"
+  }
+]

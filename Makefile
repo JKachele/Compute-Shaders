@@ -22,8 +22,7 @@ DEPS := $(SRC:%=$(BUILD_DIR)/%.d)
 GLFW := lib/glfw/src/libglfw3.a
 GLAD := lib/glad/src/glad.o
 CGLM := lib/cglm/libcglm.a
-
-LDFLAGS += $(GLFW) $(GLAD) $(CGLM)
+LIBS := $(GLFW) $(GLAD) $(CGLM)
 
 OUT := $(BIN)/out
 
@@ -34,9 +33,9 @@ run: $(OUT)
 
 build: $(OUT)
 
-$(OUT): $(OBJ) libs
+$(OUT): $(OBJ) $(LIBS)
 	@mkdir -p $(dir $@)
-	$(CC) -o $(OUT) $(OBJ) $(LDFLAGS)
+	$(CC) -o $(OUT) $(OBJ) $(LIBS) $(LDFLAGS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	@mkdir -p $(dir $@)
@@ -44,8 +43,7 @@ $(BUILD_DIR)/%.c.o: %.c
 
 -include $(DEPS)
 
-libs: $(GLFW) $(GLAD) $(CGLM)
-
+# Libaries
 $(GLFW):
 	cd lib/glfw && cmake . && make
 
