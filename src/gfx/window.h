@@ -8,8 +8,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "../util.h"
 
 void processInput(GLFWwindow *window);
 GLFWwindow *windowInit(const char *title, int width, int height);
