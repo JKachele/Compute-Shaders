@@ -72,12 +72,27 @@ struct renderer renderInit(void) {
 }
 
 static void transform(uint shaderProgram) {
-        mat4s trans = mat4_identity();
-        trans = glms_translate(trans, (vec3s){0.5f, -0.5f, 0.0f});
-        trans = glms_rotate(trans, (float)glfwGetTime(), (vec3s){0.0f, 0.0f, 1.0f});
+        // Model Matrix
+        mat4s model = mat4_identity();
+        model = glms_rotate(model, glm_rad(-55.0f), (vec3s){1.0f, 0.0f, 0.0f});
+        model = glms_rotate(model, (float)glfwGetTime(), (vec3s){0.0f, 0.0f, 1.0f});
 
-        uint transformLoc = glGetUniformLocation(shaderProgram, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat*)&trans.raw);
+        // View Matrix
+        mat4s view = mat4_identity();
+        view = glms_translate(view, (vec3s){0.0f, 0.0f, -3.0f});
+
+        // Projection Matrix
+        mat4s projection;
+        projection = glms_perspective(glm_rad(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
+
+        uint modelLoc = glGetUniformLocation(shaderProgram, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (const GLfloat*)&model.raw);
+
+        uint viewLoc = glGetUniformLocation(shaderProgram, "view");
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const GLfloat*)&view.raw);
+
+        uint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (const GLfloat*)&projection.raw);
 }
 
 
