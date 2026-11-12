@@ -109,3 +109,8 @@ void shaderSetFloat(uint shaderProgram, const char *name, float value) {
         glUniform1f(glGetUniformLocation(shaderProgram, name), value);
 }
 
+void shaderSetMat4(uint shaderProgram, const char *name, mat4s mat) {
+        uint location = glGetUniformLocation(shaderProgram, name);
+        glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&mat.raw);
+}
+
