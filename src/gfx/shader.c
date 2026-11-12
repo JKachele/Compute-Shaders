@@ -11,32 +11,33 @@
 static const char *VERTEX_PATH = "assets/shaders/vert.glsl";
 static const char *FRAGMENT_PATH = "assets/shaders/frag.glsl";
 
-static unsigned int _compile(const char *path, GLenum type) {
-        FILE *f;
-        char *shaderSource;
-        long len;
-
-        f = fopen(path, "rb");
+static uint _compile(const char *path, GLenum type) {
+        // Open shader file
+        FILE *f = fopen(path, "rb");
         if (f == NULL) {
                 fprintf(stderr, "Error loading shader at %s\n", path);
                 exit(1);
         }
 
+        // Get file length
         fseek(f, 0, SEEK_END);
-        len = ftell(f);
+        int64 len = ftell(f);
         assert(len > 0);
+
+        // Get shader program in string variable
         fseek(f, 0, SEEK_SET);
-        shaderSource = calloc(1, len);
+        char *shaderSource = calloc(1, len);
         assert(shaderSource != NULL);
         fread(shaderSource, 1, len, f);
         assert(strlen(shaderSource) > 0);
         fclose(f);
 
-        unsigned int shaderHandle = glCreateShader(type);
-        glShaderSource(shaderHandle, 1, (const GLchar**) &shaderSource,
-                        (const GLint*)&len);
+        // Attach source to handle and compile
+        uint shaderHandle = glCreateShader(type);
+        glShaderSource(shaderHandle, 1, (const GLchar**)&shaderSource, NULL);
         glCompileShader(shaderHandle);
 
+        // Check for compilation success
         int success;
         char infoLog[512];
         glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &success);
@@ -57,36 +58,42 @@ static unsigned int _compile(const char *path, GLenum type) {
         return shaderHandle;
 }
 
-void shaderInit(struct Shader *self) {
+uint shaderInit(void) {
+        // Compile vertex and fragment shaders
         GLuint vertexShader = _compile(VERTEX_PATH, GL_VERTEX_SHADER);
         GLuint fragmentShader = _compile(FRAGMENT_PATH, GL_FRAGMENT_SHADER);
 
-        GLuint shader = glCreateProgram();
-        glAttachShader(shader, vertexShader);
-        glAttachShader(shader, fragmentShader);
-        glLinkProgram(shader);
+        // Create share program and link vertex and fragment shaders
+        GLuint shaderProgram = glCreateProgram();
+        glAttachShader(shaderProgram, vertexShader);
+        glAttachShader(shaderProgram, fragmentShader);
+        glLinkProgram(shaderProgram);
 
+        // Check shader linking success
         int success;
         char infoLog[512];
-        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
         if (!success) {
-                glGetProgramInfoLog(shader, 512, NULL, infoLog);
+                glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
                 printf("ERROR: SHADER LINKING FAILED\n%s\n",
                                 infoLog);
         }
 
+        // No longer need individual shader programs
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
 
-        self->handle = shader;
-        glUseProgram(self->handle);
+        // Activate shader program
+        glUseProgram(shaderProgram);
+
+        return shaderProgram;
 }
 
-void shaderUse(struct Shader *self) {
-        glUseProgram(self->handle);
+void shaderUse(uint shaderProgram) {
+        glUseProgram(shaderProgram);
 }
 
-void shaderDestroy(struct Shader *self) {
-        glDeleteProgram(self->handle);
+void shaderDestroy(uint shaderProgram) {
+        glDeleteProgram(shaderProgram);
 }
 

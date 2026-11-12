@@ -10,5 +10,12 @@
 
 #include "../util.h"
 
+struct renderer {
+        uint shaderProgram;
+        uint VAO;
+};
+
+struct renderer render(void);
+
 #endif
 

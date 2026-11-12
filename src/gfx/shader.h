@@ -10,9 +10,9 @@
 
 #include "../util.h"
 
-struct Shader {
-        GLuint handle;
-};
+uint shaderInit(void);
+void shaderUse(uint shaderProgram);
+void shaderDestroy(uint shaderProgram);
 
 #endif
 

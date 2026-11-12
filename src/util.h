@@ -16,6 +16,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+typedef unsigned int  uint;
+typedef unsigned long ulong;
+
 typedef int8_t   int8;
 typedef uint8_t  uint8;
 typedef uint8_t  u8;

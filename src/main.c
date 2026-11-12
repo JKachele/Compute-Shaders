@@ -9,10 +9,13 @@
 #include <stdio.h>
 #include "util.h"
 #include "gfx/window.h"
+#include "gfx/render.h"
 
 
 int main(int argc, char *argv[]) {
         GLFWwindow *window = windowInit("Hello Window", 800, 600);
+
+        struct renderer renderer = render();
 
         // Main Rendering Loop
         while (!glfwWindowShouldClose(window)) {
@@ -22,6 +25,10 @@ int main(int argc, char *argv[]) {
                 // Rendering
                 glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
+
+                glUseProgram(renderer.shaderProgram);
+                glBindVertexArray(renderer.VAO);
+                glDrawArrays(GL_TRIANGLES, 0, 3);
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);
