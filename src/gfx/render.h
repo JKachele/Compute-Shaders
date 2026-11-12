@@ -9,11 +9,13 @@
 #define RENDER_H
 
 #include "../util.h"
+#include "texture.h"
 
 struct renderer {
         uint shaderProgram;
         uint VAO;
         uint EBO;
+        struct texture textures;
 };
 
 struct renderer renderInit(void);

@@ -44,13 +44,13 @@ static uint _compile(const char *path, GLenum type) {
         if (!success) {
                 glGetShaderInfoLog(shaderHandle, 512, NULL, infoLog);
                 if (type == GL_VERTEX_SHADER)
-                        printf("ERROR: SHADER VERTEX COMPILATION FAILED\n%s\n",
+                        fprintf(stderr, "ERROR: SHADER VERTEX COMPILATION FAILED\n%s\n",
                                 infoLog);
                 if (type == GL_FRAGMENT_SHADER)
-                        printf("ERROR: SHADER FRAGMENT COMPILATION FAILED\n"
+                        fprintf(stderr, "ERROR: SHADER FRAGMENT COMPILATION FAILED\n"
                                         "%s\n", infoLog);
                 else
-                        printf("ERROR: SHADER COMPILATION FAILED\n%s\n",
+                        fprintf(stderr, "ERROR: SHADER COMPILATION FAILED\n%s\n",
                                 infoLog);
         }
 
@@ -75,7 +75,7 @@ uint shaderInit(void) {
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
         if (!success) {
                 glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-                printf("ERROR: SHADER LINKING FAILED\n%s\n",
+                fprintf(stderr, "ERROR: SHADER LINKING FAILED\n%s\n",
                                 infoLog);
         }
 
@@ -97,15 +97,15 @@ void shaderDestroy(uint shaderProgram) {
         glDeleteProgram(shaderProgram);
 }
 
-void setBool(uint shaderProgram, const char *name, bool value) {
+void shaderSetBool(uint shaderProgram, const char *name, bool value) {
         glUniform1i(glGetUniformLocation(shaderProgram, name), (int)value);
 }
 
-void setInt(uint shaderProgram, const char *name, int value) {
+void shaderSetInt(uint shaderProgram, const char *name, int value) {
         glUniform1i(glGetUniformLocation(shaderProgram, name), value);
 }
 
-void setFloat(uint shaderProgram, const char *name, float value) {
+void shaderSetFloat(uint shaderProgram, const char *name, float value) {
         glUniform1f(glGetUniformLocation(shaderProgram, name), value);
 }
 

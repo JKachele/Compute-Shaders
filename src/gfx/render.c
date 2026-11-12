@@ -8,15 +8,18 @@
 
 #include "render.h"
 #include "shader.h"
+#include "texture.h"
 
 // Create all vertex and element objects and compile shaders
 struct renderer renderInit(void) {
+        struct renderer renderer;
+
         float vertices[] = {
-                //X      Y      Z        R     G     B
-                 0.5f,  0.5f,  0.0f,    1.0f, 1.0f, 1.0f,       // Top Right
-                 0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f,       // Bottom Right
-                -0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f,       // Bottom Left
-                -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f        // Top Left
+                //X      Y      Z       Xuv   Yuv
+                 0.5f,  0.5f,  0.0f,    1.0f, 1.0f,     // Top Right
+                 0.5f, -0.5f,  0.0f,    1.0f, 0.0f,     // Bottom Right
+                -0.5f, -0.5f,  0.0f,    0.0f, 0.0f,     // Bottom Left
+                -0.5f,  0.5f,  0.0f,    0.0f, 1.0f      // Top Left
         };
         uint indices[] = {
                 0, 1, 3,        // First Triangle
@@ -26,6 +29,7 @@ struct renderer renderInit(void) {
         // Create a vertex array object to store vertex attributes and buffer objects
         uint VAO;
         glGenVertexArrays(1, &VAO);
+        renderer.VAO = VAO;
 
         // Allocate GPU Memory to store vertices
         uint VBO;
@@ -34,6 +38,7 @@ struct renderer renderInit(void) {
         // Create Element Buffer to store vertex indices to draw triangles
         uint EBO;
         glGenBuffers(1, &EBO);
+        renderer.EBO = EBO;
 
         // Bind VAO to store vertex buffers and attrib pointers
         glBindVertexArray(VAO);
@@ -52,11 +57,11 @@ struct renderer renderInit(void) {
                         3,                      // How many values in this vertex attribute
                         GL_FLOAT,               // Data type used in vertex attribute
                         GL_FALSE,               // Does the vertex need to be normalized
-                        6 * sizeof(float),      // Stride (Distance between vertex attributes)
+                        5 * sizeof(float),      // Stride (Distance between vertex attributes)
                         (void*)0);              // Offset of data in buffer
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void*)(3*sizeof(float)));
         glEnableVertexAttribArray(1);
 
         // Unbind VAO so other VAO calls wint modify this VAO
@@ -64,10 +69,13 @@ struct renderer renderInit(void) {
 
         // Compile and link shader programs
         uint shaderProgram = shaderInit();
-
         shaderUse(shaderProgram);
+        renderer.shaderProgram = shaderProgram;
 
-        struct renderer renderer = {.shaderProgram = shaderProgram, .VAO = VAO, .EBO = EBO};
+        // Load textures
+        struct texture textures = textureInit(shaderProgram);
+        renderer.textures = textures;
+
         return renderer;
 }
 
@@ -103,6 +111,9 @@ void render(struct renderer renderer) {
 
         // Transform vertices
         transform(renderer.shaderProgram);
+
+        // Bind Textures
+        bindTextures(renderer.textures);
 
         // Attach Vertex Array and Element Buffer
         glBindVertexArray(renderer.VAO);
