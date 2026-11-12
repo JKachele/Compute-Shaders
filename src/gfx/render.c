@@ -9,13 +9,14 @@
 #include "render.h"
 #include "shader.h"
 
-struct renderer render(void) {
+// Create all vertex and element objects and compile shaders
+struct renderer renderInit(void) {
         float vertices[] = {
-                // X      Y      Z
-                 0.5f,  0.5f,  0.0f,    // Top Right
-                 0.5f, -0.5f,  0.0f,    // Bottom Right
-                -0.5f, -0.5f,  0.0f,    // Bottom Left
-                -0.5f,  0.5f,  0.0f     // Top Left
+                //X      Y      Z        R     G     B
+                 0.5f,  0.5f,  0.0f,    1.0f, 1.0f, 1.0f,       // Top Right
+                 0.5f, -0.5f,  0.0f,    0.0f, 0.0f, 1.0f,       // Bottom Right
+                -0.5f, -0.5f,  0.0f,    0.0f, 1.0f, 0.0f,       // Bottom Left
+                -0.5f,  0.5f,  0.0f,    1.0f, 0.0f, 0.0f        // Top Left
         };
         uint indices[] = {
                 0, 1, 3,        // First Triangle
@@ -51,9 +52,12 @@ struct renderer render(void) {
                         3,                      // How many values in this vertex attribute
                         GL_FLOAT,               // Data type used in vertex attribute
                         GL_FALSE,               // Does the vertex need to be normalized
-                        3 * sizeof(float),      // Stride (Distance between vertex attributes)
+                        6 * sizeof(float),      // Stride (Distance between vertex attributes)
                         (void*)0);              // Offset of data in buffer
         glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
+        glEnableVertexAttribArray(1);
 
         // Unbind VAO so other VAO calls wint modify this VAO
         glBindVertexArray(0);
@@ -61,7 +65,35 @@ struct renderer render(void) {
         // Compile and link shader programs
         uint shaderProgram = shaderInit();
 
+        shaderUse(shaderProgram);
+
         struct renderer renderer = {.shaderProgram = shaderProgram, .VAO = VAO, .EBO = EBO};
         return renderer;
+}
+
+static void transform(uint shaderProgram) {
+        mat4s trans = mat4_identity();
+        trans = glms_translate(trans, (vec3s){0.5f, -0.5f, 0.0f});
+        trans = glms_rotate(trans, (float)glfwGetTime(), (vec3s){0.0f, 0.0f, 1.0f});
+
+        uint transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, (const GLfloat*)&trans.raw);
+}
+
+
+// Render vertex and element objects using shaders
+void render(struct renderer renderer) {
+        // Attach shader program
+        shaderUse(renderer.shaderProgram);
+
+        // Transform vertices
+        transform(renderer.shaderProgram);
+
+        // Attach Vertex Array and Element Buffer
+        glBindVertexArray(renderer.VAO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer.EBO);
+
+        // Draw elements as triangles
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 

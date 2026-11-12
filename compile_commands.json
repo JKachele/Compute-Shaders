@@ -10,10 +10,87 @@
       "-Wpedantic",
       "-Wno-unused-parameter",
       "-Wno-unused-variable",
-      "-Ilib/cglm/include",
+      "-Wno-missing-braces",
       "-Ilib/glad/include",
       "-Ilib/glfw/include",
       "-Ilib/stb",
+      "-Ilib/cglm/include",
+      "-DCGLM_OMIT_NS_FROM_STRUCT_API",
+      "-o",
+      "build/src/gfx/render.c.o",
+      "src/gfx/render.c"
+    ],
+    "directory": "/home/e454984/Programing/CProjects/Compute-Shaders",
+    "file": "/home/e454984/Programing/CProjects/Compute-Shaders/src/gfx/render.c",
+    "output": "/home/e454984/Programing/CProjects/Compute-Shaders/build/src/gfx/render.c.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-std=c11",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wno-unused-parameter",
+      "-Wno-unused-variable",
+      "-Wno-missing-braces",
+      "-Ilib/glad/include",
+      "-Ilib/glfw/include",
+      "-Ilib/stb",
+      "-Ilib/cglm/include",
+      "-DCGLM_OMIT_NS_FROM_STRUCT_API",
+      "-o",
+      "build/src/gfx/shader.c.o",
+      "src/gfx/shader.c"
+    ],
+    "directory": "/home/e454984/Programing/CProjects/Compute-Shaders",
+    "file": "/home/e454984/Programing/CProjects/Compute-Shaders/src/gfx/shader.c",
+    "output": "/home/e454984/Programing/CProjects/Compute-Shaders/build/src/gfx/shader.c.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-std=c11",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wno-unused-parameter",
+      "-Wno-unused-variable",
+      "-Wno-missing-braces",
+      "-Ilib/glad/include",
+      "-Ilib/glfw/include",
+      "-Ilib/stb",
+      "-Ilib/cglm/include",
+      "-DCGLM_OMIT_NS_FROM_STRUCT_API",
+      "-o",
+      "build/src/gfx/window.c.o",
+      "src/gfx/window.c"
+    ],
+    "directory": "/home/e454984/Programing/CProjects/Compute-Shaders",
+    "file": "/home/e454984/Programing/CProjects/Compute-Shaders/src/gfx/window.c",
+    "output": "/home/e454984/Programing/CProjects/Compute-Shaders/build/src/gfx/window.c.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-std=c11",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wno-unused-parameter",
+      "-Wno-unused-variable",
+      "-Wno-missing-braces",
+      "-Ilib/glad/include",
+      "-Ilib/glfw/include",
+      "-Ilib/stb",
+      "-Ilib/cglm/include",
+      "-DCGLM_OMIT_NS_FROM_STRUCT_API",
       "-o",
       "build/src/main.c.o",
       "src/main.c"
@@ -21,18 +98,5 @@
     "directory": "/home/e454984/Programing/CProjects/Compute-Shaders",
     "file": "/home/e454984/Programing/CProjects/Compute-Shaders/src/main.c",
     "output": "/home/e454984/Programing/CProjects/Compute-Shaders/build/src/main.c.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-Iinclude",
-      "-c",
-      "-o",
-      "src/glad.o",
-      "src/glad.c"
-    ],
-    "directory": "/home/e454984/Programing/CProjects/Compute-Shaders/lib/glad",
-    "file": "/home/e454984/Programing/CProjects/Compute-Shaders/lib/glad/src/glad.c",
-    "output": "/home/e454984/Programing/CProjects/Compute-Shaders/lib/glad/src/glad.o"
   }
 ]

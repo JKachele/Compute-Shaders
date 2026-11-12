@@ -97,3 +97,15 @@ void shaderDestroy(uint shaderProgram) {
         glDeleteProgram(shaderProgram);
 }
 
+void setBool(uint shaderProgram, const char *name, bool value) {
+        glUniform1i(glGetUniformLocation(shaderProgram, name), (int)value);
+}
+
+void setInt(uint shaderProgram, const char *name, int value) {
+        glUniform1i(glGetUniformLocation(shaderProgram, name), value);
+}
+
+void setFloat(uint shaderProgram, const char *name, float value) {
+        glUniform1f(glGetUniformLocation(shaderProgram, name), value);
+}
+

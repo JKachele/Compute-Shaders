@@ -16,7 +16,8 @@ struct renderer {
         uint EBO;
 };
 
-struct renderer render(void);
+struct renderer renderInit(void);
+void render(struct renderer renderer);
 
 #endif
 

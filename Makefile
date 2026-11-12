@@ -7,8 +7,9 @@
 CC = gcc
 CFLAGS = -std=c11 -g -MMD
 CFLAGS += -Wall -Wextra -Wpedantic 
-CFLAGS += -Wno-unused-parameter -Wno-unused-variable
-CFLAGS += -Ilib/cglm/include -Ilib/glad/include -Ilib/glfw/include -Ilib/stb
+CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-missing-braces
+CFLAGS += -Ilib/glad/include -Ilib/glfw/include -Ilib/stb
+CFLAGS += -Ilib/cglm/include -DCGLM_OMIT_NS_FROM_STRUCT_API
 LDFLAGS := -lm -g
 
 BIN := bin

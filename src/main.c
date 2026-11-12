@@ -15,7 +15,7 @@
 int main(int argc, char *argv[]) {
         GLFWwindow *window = windowInit("Hello Window", 800, 600);
 
-        struct renderer renderer = render();
+        struct renderer renderer = renderInit();
 
         // Main Rendering Loop
         while (!glfwWindowShouldClose(window)) {
@@ -26,11 +26,7 @@ int main(int argc, char *argv[]) {
                 glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                glUseProgram(renderer.shaderProgram);
-                glBindVertexArray(renderer.VAO);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer.EBO);
-                // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                render(renderer);
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);

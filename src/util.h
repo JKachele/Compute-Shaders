@@ -8,13 +8,15 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <cglm/cglm.h>
+#include <cglm/struct.h>
 
 typedef unsigned int  uint;
 typedef unsigned long ulong;

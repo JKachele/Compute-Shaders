@@ -14,5 +14,9 @@ uint shaderInit(void);
 void shaderUse(uint shaderProgram);
 void shaderDestroy(uint shaderProgram);
 
+void setBool(uint shaderProgram, const char *name, bool value);
+void setInt(uint shaderProgram, const char *name, int value);
+void setFloat(uint shaderProgram, const char *name, float value);
+
 #endif
 
