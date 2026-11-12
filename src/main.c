@@ -28,7 +28,9 @@ int main(int argc, char *argv[]) {
 
                 glUseProgram(renderer.shaderProgram);
                 glBindVertexArray(renderer.VAO);
-                glDrawArrays(GL_TRIANGLES, 0, 3);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer.EBO);
+                // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);

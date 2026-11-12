@@ -12,9 +12,14 @@
 struct renderer render(void) {
         float vertices[] = {
                 // X      Y      Z
-                -0.5f, -0.5f,  0.0f,
-                 0.5f, -0.5f,  0.0f,
-                 0.0f,  0.5f,  0.0f
+                 0.5f,  0.5f,  0.0f,    // Top Right
+                 0.5f, -0.5f,  0.0f,    // Bottom Right
+                -0.5f, -0.5f,  0.0f,    // Bottom Left
+                -0.5f,  0.5f,  0.0f     // Top Left
+        };
+        uint indices[] = {
+                0, 1, 3,        // First Triangle
+                1, 2, 3         // Second Triangle
         };
 
         // Create a vertex array object to store vertex attributes and buffer objects
@@ -25,14 +30,20 @@ struct renderer render(void) {
         uint VBO;
         glGenBuffers(1, &VBO);
 
+        // Create Element Buffer to store vertex indices to draw triangles
+        uint EBO;
+        glGenBuffers(1, &EBO);
+
         // Bind VAO to store vertex buffers and attrib pointers
         glBindVertexArray(VAO);
 
-        // Bind the VBO Buffer to the GL_ARRAY_BUFFER object
+        // Bind the VBO Buffer to the GL_ARRAY_BUFFER object and copy vertex data to buffer
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-        // Copy vertex data to the buffer's memory
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        // Bind the EBO and store index data to buffer
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
         // Tell openGL how to interpret the vertex data and enable the attribute
         glVertexAttribPointer(
@@ -50,7 +61,7 @@ struct renderer render(void) {
         // Compile and link shader programs
         uint shaderProgram = shaderInit();
 
-        struct renderer renderer = {.shaderProgram = shaderProgram, .VAO = VAO};
+        struct renderer renderer = {.shaderProgram = shaderProgram, .VAO = VAO, .EBO = EBO};
         return renderer;
 }
 

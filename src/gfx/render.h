@@ -13,6 +13,7 @@
 struct renderer {
         uint shaderProgram;
         uint VAO;
+        uint EBO;
 };
 
 struct renderer render(void);
