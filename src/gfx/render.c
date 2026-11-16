@@ -133,7 +133,6 @@ struct renderer renderInit(void) {
 static void transform(uint shaderProgram, struct camera *cam) {
         // Model Matrix
         mat4s model = mat4_identity();
-        model = glms_rotate(model, (float)glfwGetTime(), (vec3s){0.5f, 1.0f, 0.0f});
         shaderSetMat4(shaderProgram, "model", model);
 
         // View Matrix

@@ -12,7 +12,7 @@
 
 float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
-float Yaw = 90.0f;
+float Yaw = -90.0f;
 float Pitch = 0.0f;
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -39,7 +39,7 @@ void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
 
         // Calculate mouse offsets
         float xOffset = (xPos - lastX) * Sensitivity;
-        float yOffset = (yPos - lastY) * Sensitivity;
+        float yOffset = (lastY - yPos) * Sensitivity; // reversed since y goes from bottom to top
         lastX = xPos;
         lastY = yPos;
 
@@ -58,19 +58,15 @@ void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
                 glfwSetWindowShouldClose(window, true);
         }
         if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-                printf("W\n");
                 cameraMove(cam, FRONT);
         }
         if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-                printf("A\n");
                 cameraMove(cam, LEFT);
         }
         if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-                printf("S\n");
                 cameraMove(cam, BACK);
         }
         if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-                printf("D\n");
                 cameraMove(cam, RIGHT);
         }
 }
