@@ -15,12 +15,15 @@ struct camera {
         vec3s front;
         vec3s up;
         float speed;
+        float pitch;
+        float yaw;
 };
 
 
 struct camera cameraInit(void);
 void cameraSet(struct camera *cam, vec3s pos, vec3s front, vec3s up, float speed);
 void cameraMove(struct camera *cam, direction dir);
+void cameraUpdateAngle(struct camera *cam, float yaw, float pitch);
 mat4s camLookAt(struct camera cam);
 
 #endif

@@ -46,6 +46,14 @@ void cameraMove(struct camera *cam, direction dir) {
         }
 }
 
+void cameraUpdateAngle(struct camera *cam, float yaw, float pitch) {
+        vec3s dir;
+        dir.x = cos(glm_rad(yaw)) * cos(glm_rad(pitch));
+        dir.y = sin(glm_rad(pitch));
+        dir.z = sin(glm_rad(yaw)) * cos(glm_rad(pitch));
+        cam->front = glms_normalize(dir);
+}
+
 mat4s camLookAt(struct camera cam) {
         return glms_lookat(cam.pos, vec3_add(cam.pos, cam.front), cam.up);
 }

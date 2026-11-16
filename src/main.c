@@ -11,6 +11,8 @@
 #include "gfx/window.h"
 #include "gfx/render.h"
 
+extern float Yaw;
+extern float Pitch;
 
 int main(int argc, char *argv[]) {
         GLFWwindow *window = windowInit("Hello Window", 800, 600);
@@ -28,6 +30,9 @@ int main(int argc, char *argv[]) {
 
                 // User Inputs
                 processInput(window, deltaTime, &renderer.camera);
+
+                // Update Camera Angle
+                cameraUpdateAngle(&renderer.camera, Yaw, Pitch);
 
                 // Rendering
                 render(renderer);

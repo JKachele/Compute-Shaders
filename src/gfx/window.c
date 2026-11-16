@@ -10,9 +10,47 @@
 #include <stdbool.h>
 #include "window.h"
 
+float WindowWidth  = 800.0f;
+float WindowHeight = 600.0f;
+float Yaw = 90.0f;
+float Pitch = 0.0f;
+
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+        WindowWidth = width;
+        WindowHeight = height;
         glViewport(0, 0, width, height);
 } 
+
+void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
+        const float Sensitivity = 0.1f;
+
+        // Store last mouse position
+        static float lastX = 400;
+        static float lastY = 300;
+        static bool firstMouse = true;
+
+        // Set last position to current if mouse first entered window
+        // Prevents large movement jump when first entering
+        if (firstMouse) {
+                lastX = xPos;
+                lastY = yPos;
+                firstMouse = false;
+        }
+
+        // Calculate mouse offsets
+        float xOffset = (xPos - lastX) * Sensitivity;
+        float yOffset = (yPos - lastY) * Sensitivity;
+        lastX = xPos;
+        lastY = yPos;
+
+        // Update Yaw/Pitch with offsets
+        Yaw   += xOffset;
+        Pitch += yOffset;
+
+        // Constrain pitch to not flip over y axis
+        if (Pitch > 89.0f)  { Pitch = 89.0f;  }
+        if (Pitch < -89.0f) { Pitch = -89.0f; }
+}
 
 void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
         cam->speed = 2.5f * deltaTime;
@@ -20,15 +58,19 @@ void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
                 glfwSetWindowShouldClose(window, true);
         }
         if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+                printf("W\n");
                 cameraMove(cam, FRONT);
         }
         if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+                printf("A\n");
                 cameraMove(cam, LEFT);
         }
         if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+                printf("S\n");
                 cameraMove(cam, BACK);
         }
         if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+                printf("D\n");
                 cameraMove(cam, RIGHT);
         }
 }
@@ -41,6 +83,8 @@ GLFWwindow *windowInit(const char *title, int width, int height) {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         // Create window
+        WindowWidth = width;
+        WindowHeight = height;
         GLFWwindow *window = glfwCreateWindow(width, height, title, NULL, NULL);
         if (window == NULL) {
                 fprintf(stderr, "Failed to create GLFW window\n");
@@ -60,6 +104,11 @@ GLFWwindow *windowInit(const char *title, int width, int height) {
 
         // Give glfw the callback function if the window size changes
         glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+
+        // Hide the cusor and capture its position
+        glfwSetCursorPosCallback(window, mouseCallback);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
         return window;
 }
 
