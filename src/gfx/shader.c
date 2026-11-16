@@ -8,9 +8,6 @@
 
 #include "shader.h"
 
-static const char *VERTEX_PATH = "assets/shaders/vert.glsl";
-static const char *FRAGMENT_PATH = "assets/shaders/frag.glsl";
-
 static uint _compile(const char *path, GLenum type) {
         // Open shader file
         FILE *f = fopen(path, "rb");
@@ -58,10 +55,10 @@ static uint _compile(const char *path, GLenum type) {
         return shaderHandle;
 }
 
-uint shaderInit(void) {
+uint shaderInit(const char *vertPath, const char *fragPath) {
         // Compile vertex and fragment shaders
-        GLuint vertexShader = _compile(VERTEX_PATH, GL_VERTEX_SHADER);
-        GLuint fragmentShader = _compile(FRAGMENT_PATH, GL_FRAGMENT_SHADER);
+        GLuint vertexShader = _compile(vertPath, GL_VERTEX_SHADER);
+        GLuint fragmentShader = _compile(fragPath, GL_FRAGMENT_SHADER);
 
         // Create share program and link vertex and fragment shaders
         GLuint shaderProgram = glCreateProgram();

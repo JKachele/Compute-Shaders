@@ -10,7 +10,7 @@
 
 #include "../util.h"
 
-uint shaderInit(void);
+uint shaderInit(const char *vertexPath, const char *fragPath);
 void shaderUse(uint shaderProgram);
 void shaderDestroy(uint shaderProgram);
 

@@ -11,13 +11,13 @@
 #include "../util.h"
 #include "texture.h"
 #include "camera.h"
+#include "../items/item.h"
+#include "../items/box.h"
 
 struct renderer {
-        uint shaderProgram;
-        uint VAO;
-        uint EBO;
-        struct texture textures;
         struct camera camera;
+        int numItems;
+        struct item *items;
 };
 
 struct renderer renderInit(void);
