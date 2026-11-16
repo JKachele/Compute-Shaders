@@ -9,8 +9,9 @@
 #define WINDOW_H
 
 #include "../util.h"
+#include "camera.h"
 
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow *window, float deltaTime, struct camera *cam);
 GLFWwindow *windowInit(const char *title, int width, int height);
 
 #endif

@@ -10,12 +10,14 @@
 
 #include "../util.h"
 #include "texture.h"
+#include "camera.h"
 
 struct renderer {
         uint shaderProgram;
         uint VAO;
         uint EBO;
         struct texture textures;
+        struct camera camera;
 };
 
 struct renderer renderInit(void);

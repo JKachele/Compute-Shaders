@@ -14,9 +14,22 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
 } 
 
-void processInput(GLFWwindow *window) {
+void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
+        cam->speed = 2.5f * deltaTime;
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
+        }
+        if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+                cameraMove(cam, FRONT);
+        }
+        if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+                cameraMove(cam, LEFT);
+        }
+        if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+                cameraMove(cam, BACK);
+        }
+        if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+                cameraMove(cam, RIGHT);
         }
 }
 

@@ -34,5 +34,14 @@ typedef int64_t  int64;
 typedef uint64_t uint64;
 typedef uint64_t u64;
 
+typedef enum direction {
+        FRONT,
+        RIGHT,
+        BACK,
+        LEFT,
+        UP,
+        DOWN
+} direction;
+
 #endif
 

@@ -49,14 +49,14 @@ static uint loadTexture(const char *filename, GLenum format, bool flip) {
 
 struct texture textureInit(uint shaderProgram) {
         struct texture texture;
-        texture.numTextures = 2;
+        texture.numTextures = 1;
         texture.textures = malloc(texture.numTextures * sizeof(uint));
 
         texture.textures[0] = loadTexture(Container, GL_RGB, false);
         shaderSetInt(shaderProgram, "tex0", 0);
 
-        texture.textures[1] = loadTexture(Face, GL_RGBA, true);
-        shaderSetInt(shaderProgram, "tex1", 1);
+        // texture.textures[1] = loadTexture(Face, GL_RGBA, true);
+        // shaderSetInt(shaderProgram, "tex1", 1);
 
         return texture;
 }

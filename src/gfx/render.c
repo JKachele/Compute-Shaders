@@ -124,18 +124,20 @@ struct renderer renderInit(void) {
         // Enable Z-Buffer for Depth Testing
         glEnable(GL_DEPTH_TEST);
 
+        // Initalize camera
+        renderer.camera = cameraInit();
+
         return renderer;
 }
 
-static void transform(uint shaderProgram) {
+static void transform(uint shaderProgram, struct camera *cam) {
         // Model Matrix
         mat4s model = mat4_identity();
         model = glms_rotate(model, (float)glfwGetTime(), (vec3s){0.5f, 1.0f, 0.0f});
         shaderSetMat4(shaderProgram, "model", model);
 
         // View Matrix
-        mat4s view = mat4_identity();
-        view = glms_translate(view, (vec3s){0.0f, 0.0f, -3.0f});
+        mat4s view = camLookAt(*cam);
         shaderSetMat4(shaderProgram, "view", view);
 
         // Projection Matrix
@@ -155,7 +157,7 @@ void render(struct renderer renderer) {
         shaderUse(renderer.shaderProgram);
 
         // Transform vertices
-        transform(renderer.shaderProgram);
+        transform(renderer.shaderProgram, &renderer.camera);
 
         // Bind Textures
         bindTextures(renderer.textures);

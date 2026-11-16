@@ -17,15 +17,19 @@ int main(int argc, char *argv[]) {
 
         struct renderer renderer = renderInit();
 
+        float deltaTime = 0.0f; // Time between current and last frame
+        float lastFrame = 0.0f; // Time of last frame
+
         // Main Rendering Loop
         while (!glfwWindowShouldClose(window)) {
+                float currentFrame = glfwGetTime();
+                deltaTime = currentFrame - lastFrame;
+                lastFrame = currentFrame;
+
                 // User Inputs
-                processInput(window);
+                processInput(window, deltaTime, &renderer.camera);
 
                 // Rendering
-                glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
-
                 render(renderer);
 
                 // Display the buffer to the window and check/call events
