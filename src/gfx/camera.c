@@ -10,10 +10,10 @@
 
 struct camera cameraInit(void) {
         struct camera cam;
-        cam.pos = (vec3s){0.0f, 0.1f, 3.0f};
+        cam.pos = (vec3s){0.0f, 10.0f, 12.0f};
         cam.front = glms_normalize((vec3s){0.0f, 0.0f, -1.0f});
         cam.up = (vec3s){0.0f, 1.0f, 0.0f};
-        cam.speed = 0.05f;
+        cam.speed = 0.1f;
         cam.pitch = -45.0f;
         cam.yaw = -90.0f;
         cam.fov = 45.0f;
@@ -30,31 +30,33 @@ void cameraSet(struct camera *cam, vec3s pos, vec3s front, vec3s up, float speed
 }
 
 void cameraMove(struct camera *cam, direction dir) {
+        vec3s camFront = cam->front;
+        camFront.y = 0;
+        camFront = glms_normalize(camFront);
         vec3s camRight = glms_normalize(glms_cross(cam->front, cam->up));
-        vec3s camUp = glms_normalize(glms_cross(cam->front, camRight));
         switch (dir) {
         case FRONT:
-                cam->pos = vec3_add(cam->pos, vec3_scale(cam->front, cam->speed));
+                cam->pos = vec3_add(cam->pos, vec3_scale(camFront, cam->speed));
                 break;
         case RIGHT:
                 cam->pos = vec3_add(cam->pos, vec3_scale(camRight, cam->speed));
                 break;
         case BACK:
-                cam->pos = vec3_sub(cam->pos, vec3_scale(cam->front, cam->speed));
+                cam->pos = vec3_sub(cam->pos, vec3_scale(camFront, cam->speed));
                 break;
         case LEFT:
                 cam->pos = vec3_sub(cam->pos, vec3_scale(camRight, cam->speed));
                 break;
         case UP:
-                cam->pos = vec3_sub(cam->pos, vec3_scale(camUp, cam->speed));
+                cam->pos.y += cam->speed;
                 break;
         case DOWN:
-                cam->pos = vec3_add(cam->pos, vec3_scale(camUp, cam->speed));
+                cam->pos.y -= cam->speed;
                 break;
         }
 }
 
-void cameraUpdateAngle(struct camera *cam, float yaw, float pitch) {
+static void cameraUpdateAngle(struct camera *cam, float yaw, float pitch) {
         vec3s dir;
         dir.x = cos(glm_rad(yaw)) * cos(glm_rad(pitch));
         dir.y = sin(glm_rad(pitch));
@@ -62,9 +64,16 @@ void cameraUpdateAngle(struct camera *cam, float yaw, float pitch) {
         cam->front = glms_normalize(dir);
 }
 
-void cameraUpdateWindow(struct camera *cam, float winWidth, float winHeight) {
+static void cameraUpdateWindow(struct camera *cam, float winWidth, float winHeight) {
         cam->winHeight = winHeight;
         cam->winWidth = winWidth;
+}
+
+void cameraUpdate(struct camera *cam, float winWidth, float winHeight,
+                float yaw, float pitch, float speed) {
+        cameraUpdateWindow(cam, winWidth, winHeight);
+        cameraUpdateAngle(cam, yaw, pitch);
+        cam->speed = speed;
 }
 
 mat4s cameraLookAt(struct camera cam) {

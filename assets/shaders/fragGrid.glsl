@@ -7,7 +7,7 @@ out vec4 FragColor;
 uniform vec3 cameraPos;
 uniform float gridSize = 100.0f;
 uniform float gridMinPixelsBetweenCells = 2.0f;
-uniform float gridCellSize = 0.025f;
+uniform float gridCellSize = 0.1f;
 uniform vec4 gridColorThin  = vec4(0.5f, 0.5f, 0.5f, 1.0f);
 uniform vec4 gridColorThick = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 

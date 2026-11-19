@@ -13,7 +13,8 @@
 float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
 float Yaw   = -90.0f;
-float Pitch =  0.0f;
+float Pitch = -20.0f;
+float Speed = 0.1f;
 
 static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
         WindowWidth = width;
@@ -50,6 +51,10 @@ static void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
         // Constrain pitch to not flip over y axis
         if (Pitch > 89.0f)  { Pitch = 89.0f;  }
         if (Pitch < -89.0f) { Pitch = -89.0f; }
+}
+
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+        Speed += (float)yoffset;
 }
 
 void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
@@ -109,7 +114,7 @@ GLFWwindow *windowInit(const char *title, int width, int height) {
 
         // Hide the cusor and capture its position
         glfwSetCursorPosCallback(window, mouseCallback);
-        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetScrollCallback(window, scrollCallback);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         return window;

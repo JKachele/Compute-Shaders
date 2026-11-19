@@ -16,16 +16,16 @@ struct renderer renderInit(void) {
 
         // Create 10 boxes
         const vec3s cubePositions[] = {
-                (vec3s){ 0.0f,  0.0f,  0.0f},
-                (vec3s){ 2.0f,  5.0f, -15.0f},
-                (vec3s){-1.5f, -2.2f, -2.5f},
-                (vec3s){-3.8f, -2.0f, -12.3f},
-                (vec3s){ 2.4f, -0.4f, -3.5f},
-                (vec3s){-1.7f,  3.0f, -7.5f},
-                (vec3s){ 1.3f, -2.0f, -2.5f},
-                (vec3s){ 1.5f,  2.0f, -2.5f},
-                (vec3s){ 1.5f,  0.2f, -1.5f},
-                (vec3s){-1.3f,  1.0f, -1.5f}
+                (vec3s){ 0.0f, 5.0f,  0.0f},
+                (vec3s){ 2.0f, 10.0f, -15.0f},
+                (vec3s){-1.5f, 2.8f, -2.5f},
+                (vec3s){-3.8f, 3.0f, -12.3f},
+                (vec3s){ 2.4f, 4.6f, -3.5f},
+                (vec3s){-1.7f, 8.0f, -7.5f},
+                (vec3s){ 1.3f, 3.0f, -2.5f},
+                (vec3s){ 1.5f, 7.0f, -2.5f},
+                (vec3s){ 1.5f, 5.2f, -1.5f},
+                (vec3s){-1.3f, 6.0f, -1.5f}
         };
         renderer.numItems = 2;
         renderer.items = malloc(renderer.numItems * sizeof(struct item));

@@ -35,8 +35,7 @@ struct item gridInit(void) {
 void renderGrid(struct item item, struct camera cam) {
         shaderUse(item.shaderProgram);
         shaderSetVec3(item.shaderProgram, "cameraPos", cam.pos);
-        // item.pos[0].x = cam.pos.x;
-        // item.pos[0].z = cam.pos.z - 3;
+
         renderItem(item, cam);
 }
 
