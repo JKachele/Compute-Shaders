@@ -17,6 +17,9 @@ struct camera {
         float speed;
         float pitch;
         float yaw;
+        float fov;
+        float winWidth;
+        float winHeight;
 };
 
 
@@ -24,7 +27,9 @@ struct camera cameraInit(void);
 void cameraSet(struct camera *cam, vec3s pos, vec3s front, vec3s up, float speed);
 void cameraMove(struct camera *cam, direction dir);
 void cameraUpdateAngle(struct camera *cam, float yaw, float pitch);
-mat4s camLookAt(struct camera cam);
+void cameraUpdateWindow(struct camera *cam, float winWidth, float winHeight);
+mat4s cameraLookAt(struct camera cam);
+mat4s cameraProjection(struct camera cam);
 
 #endif
 

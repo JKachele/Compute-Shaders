@@ -33,12 +33,11 @@ static void transform(struct item item, int index, struct camera cam) {
         shaderSetMat4(item.shaderProgram, "model", model);
 
         // View Matrix
-        mat4s view = camLookAt(cam);
+        mat4s view = cameraLookAt(cam);
         shaderSetMat4(item.shaderProgram, "view", view);
 
         // Projection Matrix
-        mat4s projection;
-        projection = glms_perspective(glm_rad(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
+        mat4s projection = cameraProjection(cam);
         shaderSetMat4(item.shaderProgram, "projection", projection);
 }
 

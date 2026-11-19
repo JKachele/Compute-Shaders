@@ -109,7 +109,8 @@ GLFWwindow *windowInit(const char *title, int width, int height) {
 
         // Hide the cusor and capture its position
         glfwSetCursorPosCallback(window, mouseCallback);
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         return window;
 }

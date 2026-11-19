@@ -11,6 +11,8 @@
 #include "gfx/window.h"
 #include "gfx/render.h"
 
+extern float WindowWidth;
+extern float WindowHeight;
 extern float Yaw;
 extern float Pitch;
 
@@ -31,8 +33,9 @@ int main(int argc, char *argv[]) {
                 // User Inputs
                 processInput(window, deltaTime, &renderer.camera);
 
-                // Update Camera Angle
+                // Update Camera
                 cameraUpdateAngle(&renderer.camera, Yaw, Pitch);
+                cameraUpdateWindow(&renderer.camera, WindowWidth, WindowHeight);
 
                 // Rendering
                 render(renderer);

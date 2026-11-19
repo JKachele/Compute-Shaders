@@ -14,6 +14,11 @@ struct camera cameraInit(void) {
         cam.front = glms_normalize((vec3s){0.0f, 0.0f, -1.0f});
         cam.up = (vec3s){0.0f, 1.0f, 0.0f};
         cam.speed = 0.05f;
+        cam.pitch = -45.0f;
+        cam.yaw = -90.0f;
+        cam.fov = 45.0f;
+        cam.winWidth = 800.0f;
+        cam.winHeight = 600.0f;
         return cam;
 }
 
@@ -57,7 +62,16 @@ void cameraUpdateAngle(struct camera *cam, float yaw, float pitch) {
         cam->front = glms_normalize(dir);
 }
 
-mat4s camLookAt(struct camera cam) {
+void cameraUpdateWindow(struct camera *cam, float winWidth, float winHeight) {
+        cam->winHeight = winHeight;
+        cam->winWidth = winWidth;
+}
+
+mat4s cameraLookAt(struct camera cam) {
         return glms_lookat(cam.pos, vec3_add(cam.pos, cam.front), cam.up);
+}
+
+mat4s cameraProjection(struct camera cam) {
+        return glms_perspective(glm_rad(cam.fov), cam.winWidth/cam.winHeight, 0.1f, 100.0f);
 }
 

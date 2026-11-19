@@ -57,9 +57,9 @@ void render(struct renderer renderer) {
         // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // for (int i = 0; i < 10; i++) {
-        //         renderer.items[0].angle[i] += 1;
-        // }
+        for (int i = 0; i < 10; i++) {
+                renderer.items[0].angle[i] += 1;
+        }
 
         for (int i = 0; i < renderer.numItems; i++) {
                 renderer.items[i].renderFn(renderer.items[i], renderer.camera);
