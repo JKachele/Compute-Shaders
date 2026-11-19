@@ -1,9 +1,9 @@
 #version 450 core
 
-uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 cameraPos;
+uniform float gridSize = 100.0f;
 
 out vec3 WorldPos;
 
@@ -17,7 +17,7 @@ const int Indices[6] = int[6](0, 2, 1, 2, 0, 3);
 
 void main() {
         int Index = Indices[gl_VertexID];
-        vec3 vPos3 = Pos[Index];
+        vec3 vPos3 = Pos[Index] * gridSize;
         vPos3.x += cameraPos.x;
         vPos3.z += cameraPos.z;
 
@@ -26,3 +26,4 @@ void main() {
 
         WorldPos = vPos3;
 }
+

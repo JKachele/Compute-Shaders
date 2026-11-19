@@ -12,16 +12,16 @@
 
 float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
-float Yaw = -90.0f;
-float Pitch = -45.0f;
+float Yaw   = -90.0f;
+float Pitch =  0.0f;
 
-void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
         WindowWidth = width;
         WindowHeight = height;
         glViewport(0, 0, width, height);
 } 
 
-void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
+static void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
         const float Sensitivity = 0.1f;
 
         // Store last mouse position
