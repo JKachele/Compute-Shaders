@@ -13,6 +13,7 @@
 #include "camera.h"
 #include "../items/item.h"
 #include "../items/box.h"
+#include "../items/grid.h"
 
 struct renderer {
         struct camera camera;

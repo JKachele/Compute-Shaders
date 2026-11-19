@@ -17,6 +17,7 @@ void shaderDestroy(uint shaderProgram);
 void shaderSetBool(uint shaderProgram, const char *name, bool value);
 void shaderSetInt(uint shaderProgram, const char *name, int value);
 void shaderSetFloat(uint shaderProgram, const char *name, float value);
+void shaderSetVec3(uint shaderProgram, const char *name, vec3s vec);
 void shaderSetMat4(uint shaderProgram, const char *name, mat4s mat);
 
 #endif

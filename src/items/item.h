@@ -13,21 +13,29 @@
 #include "../gfx/camera.h"
 #include "../gfx/texture.h"
 
+
 struct item {
-        uint shaderProgram;
         uint VAO;
         uint EBO;
+        bool hasEBO;
+        GLenum mode;    // GL_POINTS, GL_LINES, GL_TRIANGLES
+        uint count;     // Num of verticies / indices
+
+        uint shaderProgram;
         struct texture textures;
 
-        int numItems;
+        int numCopies;
         vec3s *pos;
         float *size;
         float *angle;
-        vec3s *rotate;
+        vec3s *axis;
+
+        void (*renderFn)(struct item, struct camera cam);
 };
 
 
 void itemSetNumCopies(struct item *item, int copies);
+void itemSetState(struct item *item, int index, vec3s pos, float scale, float angle, vec3s axis);
 void renderItem(struct item item, struct camera cam);
 
 #endif

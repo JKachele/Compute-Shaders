@@ -9,19 +9,27 @@
 #include "item.h"
 
 void itemSetNumCopies(struct item *item, int copies) {
-        item->numItems = copies;
+        item->numCopies = copies;
         item->pos    = malloc(copies * sizeof(vec3s));
         item->size   = malloc(copies * sizeof(float));
         item->angle  = malloc(copies * sizeof(float));
-        item->rotate = malloc(copies * sizeof(vec3s));
+        item->axis = malloc(copies * sizeof(vec3s));
+}
+
+void itemSetState(struct item *item, int index, vec3s pos, float scale, float angle, vec3s axis) {
+        item->pos[index] = pos;
+        item->size[index] = scale;
+        item->angle[index] = angle;
+        item->axis[index] = axis;
 }
 
 static void transform(struct item item, int index, struct camera cam) {
         // Model Matrix
         mat4s model = mat4_identity();
+        model = glms_scale_uni(model, item.size[index]);
         model = glms_translate(model, item.pos[index]);
         float angle = item.angle[index];
-        model = glms_rotate(model, glm_rad(angle), item.rotate[index]);
+        model = glms_rotate(model, glm_rad(angle), item.axis[index]);
         shaderSetMat4(item.shaderProgram, "model", model);
 
         // View Matrix
@@ -44,11 +52,15 @@ void renderItem(struct item item, struct camera cam) {
         // Attach Vertex Array and Element Buffer
         glBindVertexArray(item.VAO);
 
-        for (int i = 0; i < item.numItems; i++) {
+        for (int i = 0; i < item.numCopies; i++) {
                 // Transform verticies
                 transform(item, i, cam);
                 // Draw box
-                glDrawArrays(GL_TRIANGLES, 0, 36);
+                if (item.hasEBO) {
+                        glDrawElements(item.mode, item.count, GL_UNSIGNED_INT, 0);
+                } else {
+                        glDrawArrays(item.mode, 0, item.count);
+                }
         }
 }
 

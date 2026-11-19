@@ -27,17 +27,19 @@ struct renderer renderInit(void) {
                 (vec3s){ 1.5f,  0.2f, -1.5f},
                 (vec3s){-1.3f,  1.0f, -1.5f}
         };
-        renderer.numItems = 1;
+        renderer.numItems = 2;
         renderer.items = malloc(renderer.numItems * sizeof(struct item));
         renderer.items[0] = boxInit();
         itemSetNumCopies(&renderer.items[0], 10);
         for (int i = 0; i < 10; i++) {
                 struct item *box = &renderer.items[0];
-                box->pos[i] = cubePositions[i];
-                box->size[i] = 1.0f;
-                box->angle[i] = 20.0f * i;
-                box->rotate[i] = (vec3s){1.0f, 0.3f, 0.5f};
+                itemSetState(box, i, cubePositions[i], 1.0f, 20.0f*i, (vec3s){1.0f, 0.3f, 0.5f});
         }
+
+        renderer.items[1] = gridInit();
+        itemSetNumCopies(&renderer.items[1], 1);
+        vec3s pos = {0.0f, 0.0f, 0.0f};
+        itemSetState(&renderer.items[1], 0, pos, 1.0f, 0.0f, (vec3s){0.0});
 
         // Enable Z-Buffer for Depth Testing
         glEnable(GL_DEPTH_TEST);
@@ -52,12 +54,16 @@ struct renderer renderInit(void) {
 void render(struct renderer renderer) {
         // Clear previous buffer
         glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
+        // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        for (int i = 0; i < 10; i++) {
-                renderer.items[0].angle[i] += 1;
-        }
+        // for (int i = 0; i < 10; i++) {
+        //         renderer.items[0].angle[i] += 1;
+        // }
 
-        renderItem(renderer.items[0], renderer.camera);
+        for (int i = 0; i < renderer.numItems; i++) {
+                renderer.items[i].renderFn(renderer.items[i], renderer.camera);
+                // renderItem(renderer.items[i], renderer.camera);
+        }
 }
 

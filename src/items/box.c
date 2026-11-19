@@ -91,6 +91,11 @@ struct item boxInit(void) {
         // Unbind VAO so other VAO calls wint modify this VAO
         glBindVertexArray(0);
 
+        box.hasEBO = false;
+        box.mode = GL_TRIANGLES;
+        box.count = 36;
+        box.renderFn = renderItem;
+
         // Compile and link shader programs
         uint shaderProgram = shaderInit(VERTEX_SHADER, FRAGMENT_SHADER);
         shaderUse(shaderProgram);

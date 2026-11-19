@@ -13,7 +13,7 @@
 float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
 float Yaw = -90.0f;
-float Pitch = 0.0f;
+float Pitch = -45.0f;
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
         WindowWidth = width;
@@ -69,6 +69,12 @@ void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
         if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
                 cameraMove(cam, RIGHT);
         }
+        if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+                cameraMove(cam, UP);
+        }
+        if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+                cameraMove(cam, DOWN);
+        }
 }
 
 GLFWwindow *windowInit(const char *title, int width, int height) {
@@ -103,7 +109,7 @@ GLFWwindow *windowInit(const char *title, int width, int height) {
 
         // Hide the cusor and capture its position
         glfwSetCursorPosCallback(window, mouseCallback);
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
         return window;
 }
