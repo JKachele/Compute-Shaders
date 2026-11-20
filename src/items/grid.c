@@ -8,8 +8,8 @@
 
 #include "grid.h"
 
-static const char *VERTEX_SHADER = "assets/shaders/vertGrid.glsl";
-static const char *FRAGMENT_SHADER = "assets/shaders/fragGrid.glsl";
+static const char *VERTEX_SHADER = "assets/shaders/grid/grid.vs.glsl";
+static const char *FRAGMENT_SHADER = "assets/shaders/grid/grid.fs.glsl";
 
 struct item gridInit(void) {
         struct item grid = {0};
@@ -25,16 +25,18 @@ struct item gridInit(void) {
         grid.renderFn = renderGrid;
 
         // Compile and link shader programs
-        uint shaderProgram = shaderInit(VERTEX_SHADER, FRAGMENT_SHADER);
-        shaderUse(shaderProgram);
-        grid.shaderProgram = shaderProgram;
+        struct shader shader = shaderInit();
+        shaderAdd(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
+        shaderAdd(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shaderLink(&shader);
+        grid.shader = shader;
 
         return grid;
 }
 
 void renderGrid(struct item self, struct camera cam) {
-        shaderUse(self.shaderProgram);
-        shaderSetVec3(self.shaderProgram, "cameraPos", cam.pos);
+        shaderUse(self.shader);
+        shaderSetVec3(self.shader, "cameraPos", cam.pos);
 
         renderItem(self, cam);
 }

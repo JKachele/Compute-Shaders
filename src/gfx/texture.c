@@ -10,7 +10,6 @@
 
 #include "texture.h"
 #include <stb_image.h>
-#include "shader.h"
 
 const char *Container = "assets/textures/container.jpg";
 const char *Face      = "assets/textures/awesomeface.png";
@@ -47,13 +46,13 @@ static uint loadTexture(const char *filename, GLenum format, bool flip) {
         return texHandle;
 }
 
-struct texture textureInit(uint shaderProgram) {
+struct texture textureInit(struct shader shader) {
         struct texture texture;
         texture.numTextures = 1;
         texture.textures = malloc(texture.numTextures * sizeof(uint));
 
         texture.textures[0] = loadTexture(Container, GL_RGB, false);
-        shaderSetInt(shaderProgram, "tex0", 0);
+        shaderSetInt(shader, "tex0", 0);
 
         // texture.textures[1] = loadTexture(Face, GL_RGBA, true);
         // shaderSetInt(shaderProgram, "tex1", 1);

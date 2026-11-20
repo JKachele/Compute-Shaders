@@ -21,7 +21,7 @@ struct item {
         GLenum mode;    // GL_POINTS, GL_LINES, GL_TRIANGLES
         uint count;     // Num of verticies / indices
 
-        uint shaderProgram;
+        struct shader shader;
         struct texture textures;
 
         int numCopies;
@@ -30,12 +30,15 @@ struct item {
         float *angle;
         vec3s *axis;
 
+        void *data;     // Any item type specific data
+
         void (*renderFn)(struct item, struct camera);
 };
 
 
-void itemSetNumCopies(struct item *item, int copies);
-void itemSetState(struct item *item, int index, vec3s pos, float scale, float angle, vec3s axis);
+void itemSetNumCopies(struct item *self, int copies);
+void itemSetState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis);
+void itemSetDefault(struct item *self);
 void renderItem(struct item self, struct camera cam);
 
 #endif

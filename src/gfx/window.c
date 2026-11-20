@@ -13,7 +13,7 @@
 float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
 float Yaw   = -90.0f;
-float Pitch = -20.0f;
+float Pitch = 0.0f;
 
 static float Speed = 2.5f;
 

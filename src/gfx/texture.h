@@ -9,13 +9,14 @@
 #define TEXTURE_H
 
 #include "../util.h"
+#include "shader.h"
 
 struct texture {
         int numTextures;
         uint *textures;
 };
 
-struct texture textureInit(uint shaderProgram);
+struct texture textureInit(struct shader shader);
 void bindTextures(struct texture textures);
 
 #endif

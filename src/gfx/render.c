@@ -16,30 +16,32 @@ struct renderer renderInit(void) {
 
         // Create 10 boxes
         const vec3s cubePositions[] = {
-                (vec3s){ 0.0f, 5.0f,  0.0f},
-                (vec3s){ 2.0f, 10.0f, -15.0f},
-                (vec3s){-1.5f, 2.8f, -2.5f},
-                (vec3s){-3.8f, 3.0f, -12.3f},
-                (vec3s){ 2.4f, 4.6f, -3.5f},
-                (vec3s){-1.7f, 8.0f, -7.5f},
-                (vec3s){ 1.3f, 3.0f, -2.5f},
-                (vec3s){ 1.5f, 7.0f, -2.5f},
-                (vec3s){ 1.5f, 5.2f, -1.5f},
-                (vec3s){-1.3f, 6.0f, -1.5f}
+                (vec3s){ 0.0f,  0.0f,  0.0f},
+                (vec3s){ 2.0f,  5.0f, -15.0f},
+                (vec3s){-1.5f, -2.2f, -2.5f},
+                (vec3s){-3.8f, -2.0f, -12.3f},
+                (vec3s){ 2.4f, -0.4f, -3.5f},
+                (vec3s){-1.7f,  3.0f, -7.5f},
+                (vec3s){ 1.3f, -2.0f, -2.5f},
+                (vec3s){ 1.5f,  2.0f, -2.5f},
+                (vec3s){ 1.5f,  0.2f, -1.5f},
+                (vec3s){-1.3f,  1.0f, -1.5f}
         };
-        renderer.numItems = 2;
+        renderer.numItems = 3;
         renderer.items = malloc(renderer.numItems * sizeof(struct item));
-        renderer.items[0] = boxInit();
-        itemSetNumCopies(&renderer.items[0], 10);
+
+        renderer.items[0] = gridInit();
+        itemSetDefault(&renderer.items[0]);
+
+        renderer.items[1] = particleInit();
+        itemSetDefault(&renderer.items[1]);
+
+        renderer.items[2] = boxInit();
+        itemSetNumCopies(&renderer.items[2], 10);
         for (int i = 0; i < 10; i++) {
-                struct item *box = &renderer.items[0];
+                struct item *box = &renderer.items[2];
                 itemSetState(box, i, cubePositions[i], 1.0f, 20.0f*i, (vec3s){1.0f, 0.3f, 0.5f});
         }
-
-        renderer.items[1] = gridInit();
-        itemSetNumCopies(&renderer.items[1], 1);
-        vec3s pos = {0.0f, 0.0f, 0.0f};
-        itemSetState(&renderer.items[1], 0, pos, 1.0f, 0.0f, (vec3s){0.0});
 
         // Enable Z-Buffer for Depth Testing
         glEnable(GL_DEPTH_TEST);
@@ -62,7 +64,7 @@ void render(struct renderer renderer) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         for (int i = 0; i < 10; i++) {
-                renderer.items[0].angle[i] += 1;
+                renderer.items[2].angle[i] += 1;
         }
 
         for (int i = 0; i < renderer.numItems; i++) {

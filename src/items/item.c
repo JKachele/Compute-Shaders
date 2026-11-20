@@ -8,19 +8,24 @@
 
 #include "item.h"
 
-void itemSetNumCopies(struct item *item, int copies) {
-        item->numCopies = copies;
-        item->pos    = malloc(copies * sizeof(vec3s));
-        item->size   = malloc(copies * sizeof(float));
-        item->angle  = malloc(copies * sizeof(float));
-        item->axis = malloc(copies * sizeof(vec3s));
+void itemSetNumCopies(struct item *self, int copies) {
+        self->numCopies = copies;
+        self->pos    = malloc(copies * sizeof(vec3s));
+        self->size   = malloc(copies * sizeof(float));
+        self->angle  = malloc(copies * sizeof(float));
+        self->axis = malloc(copies * sizeof(vec3s));
 }
 
-void itemSetState(struct item *item, int index, vec3s pos, float scale, float angle, vec3s axis) {
-        item->pos[index] = pos;
-        item->size[index] = scale;
-        item->angle[index] = angle;
-        item->axis[index] = axis;
+void itemSetState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis) {
+        self->pos[index] = pos;
+        self->size[index] = scale;
+        self->angle[index] = angle;
+        self->axis[index] = axis;
+}
+
+void itemSetDefault(struct item *self) {
+        itemSetNumCopies(self, 1);
+        itemSetState(self, 0, (vec3s){0.0}, 1.0f, 0.0f, (vec3s){0.0});
 }
 
 static void transform(struct item item, int index, struct camera cam) {
@@ -30,20 +35,20 @@ static void transform(struct item item, int index, struct camera cam) {
         model = glms_translate(model, item.pos[index]);
         float angle = item.angle[index];
         model = glms_rotate(model, glm_rad(angle), item.axis[index]);
-        shaderSetMat4(item.shaderProgram, "model", model);
+        shaderSetMat4(item.shader, "model", model);
 
         // View Matrix
         mat4s view = cameraLookAt(cam);
-        shaderSetMat4(item.shaderProgram, "view", view);
+        shaderSetMat4(item.shader, "view", view);
 
         // Projection Matrix
         mat4s projection = cameraProjection(cam);
-        shaderSetMat4(item.shaderProgram, "projection", projection);
+        shaderSetMat4(item.shader, "projection", projection);
 }
 
 void renderItem(struct item self, struct camera cam) {
         // Attach shader program
-        shaderUse(self.shaderProgram);
+        shaderUse(self.shader);
 
         // Bind Textures
         bindTextures(self.textures);

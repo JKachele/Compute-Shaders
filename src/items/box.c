@@ -8,8 +8,8 @@
 
 #include "box.h"
 
-static const char *VERTEX_SHADER = "assets/shaders/vertBox.glsl";
-static const char *FRAGMENT_SHADER = "assets/shaders/fragBox.glsl";
+static const char *VERTEX_SHADER = "assets/shaders/vert.vs.glsl";
+static const char *FRAGMENT_SHADER = "assets/shaders/tex.fs.glsl";
 
 struct item boxInit(void) {
         struct item box = {0};
@@ -97,12 +97,14 @@ struct item boxInit(void) {
         box.renderFn = renderItem;
 
         // Compile and link shader programs
-        uint shaderProgram = shaderInit(VERTEX_SHADER, FRAGMENT_SHADER);
-        shaderUse(shaderProgram);
-        box.shaderProgram = shaderProgram;
+        struct shader shader = shaderInit();
+        shaderAdd(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
+        shaderAdd(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shaderLink(&shader);
+        box.shader = shader;
 
         // Load textures
-        struct texture textures = textureInit(shaderProgram);
+        struct texture textures = textureInit(shader);
         box.textures = textures;
 
         return box;

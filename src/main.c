@@ -21,6 +21,16 @@ int main(int argc, char *argv[]) {
 
         struct renderer renderer = renderInit();
 
+        // int x, y, z;
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &x);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &y);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &z);
+        // printf("X:%d, Y:%d, Z:%d\n", x, y, z);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &x);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &y);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &z);
+        // printf("X:%d, Y:%d, Z:%d\n", x, y, z);
+
         float deltaTime = 0.0f; // Time between current and last frame
         float lastFrame = 0.0f; // Time of last frame
 

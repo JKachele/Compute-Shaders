@@ -10,15 +10,25 @@
 
 #include "../util.h"
 
-uint shaderInit(const char *vertexPath, const char *fragPath);
-void shaderUse(uint shaderProgram);
-void shaderDestroy(uint shaderProgram);
+struct shader {
+        int numObjects;
+        int objectCap;
+        uint *objects;
+        uint program;
+};
 
-void shaderSetBool(uint shaderProgram, const char *name, bool value);
-void shaderSetInt(uint shaderProgram, const char *name, int value);
-void shaderSetFloat(uint shaderProgram, const char *name, float value);
-void shaderSetVec3(uint shaderProgram, const char *name, vec3s vec);
-void shaderSetMat4(uint shaderProgram, const char *name, mat4s mat);
+struct shader shaderInit(void);
+void shaderAdd(struct shader *self, const char *path, GLenum type);
+void shaderLink(struct shader *self);
+void shaderUse(struct shader self);
+void shaderDestroy(struct shader self);
+
+void shaderSetBool(struct shader self, const char *name, bool value);
+void shaderSetInt(struct shader self, const char *name, int value);
+void shaderSetFloat(struct shader self, const char *name, float value);
+void shaderSetVec3(struct shader self, const char *name, vec3s vec);
+void shaderSetVec4(struct shader self, const char *name, vec4s vec);
+void shaderSetMat4(struct shader self, const char *name, mat4s mat);
 
 #endif
 
