@@ -67,7 +67,6 @@ void render(struct renderer renderer) {
 
         for (int i = 0; i < renderer.numItems; i++) {
                 renderer.items[i].renderFn(renderer.items[i], renderer.camera);
-                // renderItem(renderer.items[i], renderer.camera);
         }
 }
 

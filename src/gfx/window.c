@@ -14,7 +14,9 @@ float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
 float Yaw   = -90.0f;
 float Pitch = -20.0f;
-float Speed = 0.1f;
+
+static float Speed = 2.5f;
+
 
 static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
         WindowWidth = width;
@@ -55,30 +57,33 @@ static void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
 
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
         Speed += (float)yoffset;
+        if (Speed < 2.5f) {
+                Speed = 2.5f;
+        }
 }
 
 void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
-        cam->speed = 2.5f * deltaTime;
+        float camSpeed = Speed * deltaTime;
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
         }
         if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-                cameraMove(cam, FRONT);
+                cameraMove(cam, FRONT, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-                cameraMove(cam, LEFT);
+                cameraMove(cam, LEFT, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-                cameraMove(cam, BACK);
+                cameraMove(cam, BACK, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-                cameraMove(cam, RIGHT);
+                cameraMove(cam, RIGHT, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-                cameraMove(cam, UP);
+                cameraMove(cam, UP, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-                cameraMove(cam, DOWN);
+                cameraMove(cam, DOWN, camSpeed);
         }
 }
 
@@ -115,7 +120,11 @@ GLFWwindow *windowInit(const char *title, int width, int height) {
         // Hide the cusor and capture its position
         glfwSetCursorPosCallback(window, mouseCallback);
         glfwSetScrollCallback(window, scrollCallback);
+#ifdef WSL
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+#else
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+#endif
 
         return window;
 }

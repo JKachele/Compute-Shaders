@@ -32,10 +32,10 @@ struct item gridInit(void) {
         return grid;
 }
 
-void renderGrid(struct item item, struct camera cam) {
-        shaderUse(item.shaderProgram);
-        shaderSetVec3(item.shaderProgram, "cameraPos", cam.pos);
+void renderGrid(struct item self, struct camera cam) {
+        shaderUse(self.shaderProgram);
+        shaderSetVec3(self.shaderProgram, "cameraPos", cam.pos);
 
-        renderItem(item, cam);
+        renderItem(self, cam);
 }
 

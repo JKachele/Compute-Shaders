@@ -30,13 +30,13 @@ struct item {
         float *angle;
         vec3s *axis;
 
-        void (*renderFn)(struct item, struct camera cam);
+        void (*renderFn)(struct item, struct camera);
 };
 
 
 void itemSetNumCopies(struct item *item, int copies);
 void itemSetState(struct item *item, int index, vec3s pos, float scale, float angle, vec3s axis);
-void renderItem(struct item item, struct camera cam);
+void renderItem(struct item self, struct camera cam);
 
 #endif
 

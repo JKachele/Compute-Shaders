@@ -27,6 +27,10 @@ LIBS := $(GLFW) $(GLAD) $(CGLM)
 
 OUT := $(BIN)/out
 
+ifdef WSL_DISTRO_NAME
+	CFLAGS += -DWSL
+endif
+
 .PHONY: build run clean
 
 run: $(OUT)

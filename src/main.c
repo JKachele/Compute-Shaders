@@ -15,7 +15,6 @@ extern float WindowWidth;
 extern float WindowHeight;
 extern float Yaw;
 extern float Pitch;
-extern float Speed;
 
 int main(int argc, char *argv[]) {
         GLFWwindow *window = windowInit("Hello Window", 800, 600);
@@ -31,11 +30,11 @@ int main(int argc, char *argv[]) {
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
+                // Update Camera
+                cameraUpdate(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch);
+
                 // User Inputs
                 processInput(window, deltaTime, &renderer.camera);
-
-                // Update Camera
-                cameraUpdate(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch, Speed);
 
                 // Rendering
                 render(renderer);

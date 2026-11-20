@@ -41,24 +41,24 @@ static void transform(struct item item, int index, struct camera cam) {
         shaderSetMat4(item.shaderProgram, "projection", projection);
 }
 
-void renderItem(struct item item, struct camera cam) {
+void renderItem(struct item self, struct camera cam) {
         // Attach shader program
-        shaderUse(item.shaderProgram);
+        shaderUse(self.shaderProgram);
 
         // Bind Textures
-        bindTextures(item.textures);
+        bindTextures(self.textures);
 
         // Attach Vertex Array and Element Buffer
-        glBindVertexArray(item.VAO);
+        glBindVertexArray(self.VAO);
 
-        for (int i = 0; i < item.numCopies; i++) {
+        for (int i = 0; i < self.numCopies; i++) {
                 // Transform verticies
-                transform(item, i, cam);
+                transform(self, i, cam);
                 // Draw box
-                if (item.hasEBO) {
-                        glDrawElements(item.mode, item.count, GL_UNSIGNED_INT, 0);
+                if (self.hasEBO) {
+                        glDrawElements(self.mode, self.count, GL_UNSIGNED_INT, 0);
                 } else {
-                        glDrawArrays(item.mode, 0, item.count);
+                        glDrawArrays(self.mode, 0, self.count);
                 }
         }
 }

@@ -11,7 +11,7 @@
 #include "item.h"
 
 struct item gridInit(void);
-void renderGrid(struct item item, struct camera cam);
+void renderGrid(struct item self, struct camera cam);
 
 #endif
 
