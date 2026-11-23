@@ -9,8 +9,6 @@
 #include "particle.h"
 #include "../compute/computeShader.h"
 
-static const char *VERTEX_SHADER = "assets/shaders/vert.vs.glsl";
-static const char *FRAGMENT_SHADER = "assets/shaders/color.fs.glsl";
 static const char *COMPUTE_SHADER = "assets/shaders/particles/part.cs.glsl";
 
 static void renderParticles(struct item self, struct camera cam);
@@ -88,8 +86,8 @@ struct item item_particleInit(void) {
 
         // Compile and link shader programs
         struct shader shader = shader_init();
-        shader_add(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
-        shader_add(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shader_add(&shader, SHADER_VERT, GL_VERTEX_SHADER);
+        shader_add(&shader, SHADER_FRAG_COL, GL_FRAGMENT_SHADER);
         shader_link(&shader);
         particle.shader = shader;
 

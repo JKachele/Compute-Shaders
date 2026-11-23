@@ -8,9 +8,6 @@
 
 #include "box.h"
 
-static const char *VERTEX_SHADER = "assets/shaders/vert.vs.glsl";
-static const char *FRAGMENT_SHADER = "assets/shaders/tex.fs.glsl";
-
 struct item box_init(void) {
         struct item box = {0};
 
@@ -98,8 +95,8 @@ struct item box_init(void) {
 
         // Compile and link shader programs
         struct shader shader = shader_init();
-        shader_add(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
-        shader_add(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shader_add(&shader, SHADER_VERT, GL_VERTEX_SHADER);
+        shader_add(&shader, SHADER_FRAG_TEX, GL_FRAGMENT_SHADER);
         shader_link(&shader);
         box.shader = shader;
 

@@ -10,6 +10,10 @@
 
 #include "../util.h"
 
+#define SHADER_VERT     "assets/shaders/vert.vs.glsl"
+#define SHADER_FRAG_TEX "assets/shaders/tex.fs.glsl"
+#define SHADER_FRAG_COL "assets/shaders/color.fs.glsl"
+
 struct shader {
         int numObjects;
         int objectCap;
