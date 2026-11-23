@@ -12,25 +12,25 @@
 
 static const char *COMPUTE_SHADER = "assets/shaders/particles/part.cs.glsl";
 
+static float randf(float min, float max) {
+        float r = (float)rand() / (float)RAND_MAX;
+        r *= max - min;
+        r += min;
+        return r;
+}
+
 static void calcPositions(vec4s pos[], vec4s vel[], ivec3s numParticles) {
+        srand(glfwGetTime());
+
         vec4s p = {0.0f};
-
-        float dx = 2.0f / numParticles.x;
-        float dy = 2.0f / numParticles.y;
-        float dz = 2.0f / numParticles.z;
-
-        mat4s translation = mat4_identity();
-        translation = glms_translate(translation, (vec3s){-1.0, -1.0, -1.0});
-
         int particleIndex = 0;
         for (int x = 0; x < numParticles.x; x++) {
                 for (int y = 0; y < numParticles.y; y++) {
                         for (int z = 0; z < numParticles.z; z++) {
-                                p.x = dx * x;
-                                p.y = dy * y;
-                                p.z = dz * z;
+                                p.x = randf(-1.0, 1.0);
+                                p.y = randf(-1.0, 1.0);
+                                p.z = randf(-1.0, 1.0);
                                 p.w = 1.0;
-                                p = mat4_mulv(translation, p);
                                 pos[particleIndex] = p;
                                 vel[particleIndex] = vec4_zero();
                                 particleIndex++;
@@ -74,13 +74,25 @@ static struct item BlackHolesInit(void) {
         return bh;
 }
 
-static void updateBlackHoles(struct particleData *data) {
-        mat4s rotate = glms_rotate(mat4_identity(), glm_rad(data->bhAngle), (vec3s){0, 0, 1});
+static void updateBlackHoles(struct particleData *data, float dt) {
+        float angle = data->bhSpeed * dt;
+        mat4s rotate = glms_rotate(mat4_identity(), glm_rad(angle), (vec3s){0, 0, 1});
+        data->bhPos[0] = mat4_mulv3(rotate, data->bhPos[0], 1);
+        data->bhPos[1] = mat4_mulv3(rotate, data->bhPos[1], 1);
+        shader_setVec3(data->computeShader, "blackHolePos1", data->bhPos[0]);
+        shader_setVec3(data->computeShader, "blackHolePos2", data->bhPos[1]);
+        shader_setFloat(data->computeShader, "blackHoleGrav1", data->bhGrav[0]);
+        shader_setFloat(data->computeShader, "blackHoleGrav2", data->bhGrav[1]);
+        shader_setFloat(data->computeShader, "deltaT", dt);
+
+        struct item bh = data->blackHoles;
+        bh.pos[0] = data->bhPos[0];
+        bh.pos[1] = data->bhPos[1];
 }
 
 static void updateParticles(struct item *self, float dt) {
         struct particleData *parts = (struct particleData*)self->data;
-        updateBlackHoles(parts);
+        updateBlackHoles(parts, dt);
 
         // Execute compute shader
         ivec3s groups = {parts->count.x/8, parts->count.y/8, parts->count.z/8};
@@ -88,17 +100,18 @@ static void updateParticles(struct item *self, float dt) {
 }
 
 static void renderParticles(struct item self, struct camera cam) {
+        struct particleData parts = *(struct particleData*)self.data;
+
         // Render particles
         shader_use(self.shader);
         shader_setVec4(self.shader, "color", (vec4s){0.0, 0.0, 0.0, 1.0});
-        glPointSize(2.0f);
+        glPointSize(parts.pointSize);
         item_render(self, cam);
 
         // Render black holes
-        struct particleData *parts = (struct particleData*)self.data;
         shader_setVec4(self.shader, "color", (vec4s){1.0, 0.0, 0.0, 1.0});
-        glPointSize(10.0f);
-        item_render(parts->blackHoles, cam);
+        glPointSize(parts.bhPointSize);
+        item_render(parts.blackHoles, cam);
 }
 
 struct item item_particleInit(void) {
@@ -151,6 +164,7 @@ struct item item_particleInit(void) {
         particle.count = partData->total;
         particle.updateFn = updateParticles;
         particle.renderFn = renderParticles;
+        partData->pointSize = 1.0f;
 
         // Compile and link compute shader
         partData->computeShader = cs_init(COMPUTE_SHADER);
@@ -163,8 +177,12 @@ struct item item_particleInit(void) {
         particle.shader = shader;
 
         // Create black holes
-        partData->bhPos[0] = (vec3s){ 5, 0, 0};
-        partData->bhPos[1] = (vec3s){-5, 0, 0};
+        partData->bhPos[0] = (vec3s){ 3, 0, 0};
+        partData->bhPos[1] = (vec3s){-3, 0, 0};
+        partData->bhGrav[0] = 10.0f;
+        partData->bhGrav[1] = 10.0f;
+        partData->bhSpeed = 35.0f;
+        partData->bhPointSize = 5.0f;
         partData->blackHoles = BlackHolesInit();
         partData->blackHoles.shader = particle.shader;
         item_setDefault(&partData->blackHoles);

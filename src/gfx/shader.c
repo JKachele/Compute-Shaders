@@ -108,28 +108,34 @@ void shader_destroy(struct shader self) {
 }
 
 void shader_setBool(struct shader self, const char *name, bool value) {
+        shader_use(self);
         glUniform1i(glGetUniformLocation(self.program, name), (int)value);
 }
 
 void shader_setInt(struct shader self, const char *name, int value) {
+        shader_use(self);
         glUniform1i(glGetUniformLocation(self.program, name), value);
 }
 
 void shader_setFloat(struct shader self, const char *name, float value) {
+        shader_use(self);
         glUniform1f(glGetUniformLocation(self.program, name), value);
 }
 
 void shader_setVec3(struct shader self, const char *name, vec3s vec) {
+        shader_use(self);
         uint location = glGetUniformLocation(self.program, name);
         glUniform3f(location, vec.x, vec.y, vec.z);
 }
 
 void shader_setVec4(struct shader self, const char *name, vec4s vec) {
+        shader_use(self);
         uint location = glGetUniformLocation(self.program, name);
         glUniform4f(location, vec.x, vec.y, vec.z, vec.w);
 }
 
 void shader_setMat4(struct shader self, const char *name, mat4s mat) {
+        shader_use(self);
         uint location = glGetUniformLocation(self.program, name);
         glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&mat.raw);
 }

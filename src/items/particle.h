@@ -15,13 +15,16 @@ struct particleData {
         int total;
         vec4s *pos;
         vec4s *vel;
+        float pointSize;
         uint posBuf;
         uint velBuf;
 
         struct shader computeShader;
 
         vec3s bhPos[2];
-        float bhAngle;
+        float bhGrav[2];
+        float bhSpeed;
+        float bhPointSize;
         struct item blackHoles;
 };
 
