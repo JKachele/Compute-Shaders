@@ -164,7 +164,7 @@ struct item item_particleInit(void) {
         particle.count = partData->total;
         particle.updateFn = updateParticles;
         particle.renderFn = renderParticles;
-        partData->pointSize = 1.0f;
+        partData->pointSize = 1.5f;
 
         // Compile and link compute shader
         partData->computeShader = cs_init(COMPUTE_SHADER);
@@ -182,7 +182,7 @@ struct item item_particleInit(void) {
         partData->bhGrav[0] = 10.0f;
         partData->bhGrav[1] = 10.0f;
         partData->bhSpeed = 35.0f;
-        partData->bhPointSize = 5.0f;
+        partData->bhPointSize = 10.0f;
         partData->blackHoles = BlackHolesInit();
         partData->blackHoles.shader = particle.shader;
         item_setDefault(&partData->blackHoles);

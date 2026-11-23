@@ -58,7 +58,7 @@ struct font font_init(void) {
                 return font;
         }
 
-        FT_Set_Pixel_Sizes(face, 0, 45);
+        FT_Set_Pixel_Sizes(face, 0, 100);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
         // Generate glyphs for 128 ASCII characters
@@ -93,7 +93,7 @@ struct font font_init(void) {
         return font;
 }
 
-void font_render(struct font self, const char *text, float x, float y, float scale, vec3s color,
+void font_render(struct font self, const char *text, float x, float y, float size, vec3s color,
                 float winWidth, float winHeight) {
         shader_use(self.shader);
         shader_setVec3(self.shader, "textColor", color);
@@ -101,6 +101,9 @@ void font_render(struct font self, const char *text, float x, float y, float sca
         shader_setMat4(self.shader, "projection", proj);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(self.VAO);
+
+        // Font is 100px tall
+        float scale = size / 100;
 
         for (int i = 0; text[i] != '\0'; i++) {
                 uint8 c = text[i];

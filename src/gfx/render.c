@@ -60,19 +60,40 @@ struct renderer render_init(void) {
         return renderer;
 }
 
+// Calculates moving average
+static float calcFPS(float dt) {
+        float curFPS = 1.0 / dt;
+
+        static float buffer[100] = {0};
+        static int index = 0;
+        static int count = 0;
+        static float sum = 0;
+
+        sum -= buffer[index];
+        sum += curFPS;
+        buffer[index] = curFPS;
+        index = (index + 1) % 100;
+
+        if (count < 100) {
+                count++;
+        }
+
+        return sum / count;
+}
+
 void render_update(struct renderer *self, float dt) {
         for (int i = 0; i < self->numItems; i++) {
                 if (self->items[i].updateFn != NULL) {
                         self->items[i].updateFn(&self->items[i], dt);
                 }
         }
-        self->fps = 1.0f / dt;
+        self->fps = calcFPS(dt);
 }
 
 static void render_fps(struct renderer self) {
         char fps[10] = {0};
         sprintf(fps, "%.0f FPS", self.fps);
-        font_render(self.font, fps, 25.0f, 25.0f, 0.5f, (vec3s){1.0, 1.0, 1.0},
+        font_render(self.font, fps, 10.0f, 10.0f, 15, (vec3s){1.0, 1.0, 1.0},
                         self.camera.winWidth, self.camera.winHeight);
 }
 
