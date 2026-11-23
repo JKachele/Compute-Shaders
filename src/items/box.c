@@ -111,6 +111,25 @@ struct item item_boxInit(void) {
         struct texture textures = tex_init(shader);
         box.textures = textures;
 
+        // Create 10 boxes
+        const vec3s cubePositions[] = {
+                (vec3s){ 0.0f,  0.0f,  0.0f},
+                (vec3s){ 2.0f,  5.0f, -15.0f},
+                (vec3s){-1.5f, -2.2f, -2.5f},
+                (vec3s){-3.8f, -2.0f, -12.3f},
+                (vec3s){ 2.4f, -0.4f, -3.5f},
+                (vec3s){-1.7f,  3.0f, -7.5f},
+                (vec3s){ 1.3f, -2.0f, -2.5f},
+                (vec3s){ 1.5f,  2.0f, -2.5f},
+                (vec3s){ 1.5f,  0.2f, -1.5f},
+                (vec3s){-1.3f,  1.0f, -1.5f}
+        };
+
+        item_setNumCopies(&box, 10);
+        for (int i = 0; i < 10; i++) {
+                item_setState(&box, i, cubePositions[i], 1.0f, 20.0f*i, (vec3s){1.0f, 0.3f, 0.5f});
+        }
+
         return box;
 }
 

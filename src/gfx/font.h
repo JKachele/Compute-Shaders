@@ -9,7 +9,7 @@
 #define FONT_H
 
 #include "../util.h"
-#include "texture.h"
+#include "shader.h"
 
 struct glyph {
         uint textureID; // ID handle of glyph texture
