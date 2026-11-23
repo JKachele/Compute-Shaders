@@ -4,14 +4,20 @@
 # @created     : Wednesday Nov 11, 2026 12:34:31 EST
 ######################################################################
 
-CC = gcc
-CFLAGS = -std=c11 -g -MMD
-CFLAGS += -Wall -Wextra -Wpedantic 
-CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-missing-braces
-CFLAGS += -Ilib/glad/include -Ilib/glfw/include -Ilib/stb
-CFLAGS += -Ilib/cglm/include -DCGLM_OMIT_NS_FROM_STRUCT_API
-CFLAGS += -I/usr/include/freetype2 -I/usr/include/libpng16
-LDFLAGS := -lm -lfreetype -g
+CC       := gcc
+CXX      := g++
+FLAGS    := -g -MMD
+FLAGS    += -Wall -Wextra -Wpedantic 
+FLAGS    += -Wno-unused-parameter -Wno-unused-variable -Wno-missing-braces
+FLAGS    += -Ilib/glad/include -Ilib/glfw/include -Ilib/stb
+FLAGS    += -Ilib/cglm/include -DCGLM_OMIT_NS_FROM_STRUCT_API
+FLAGS    += -I/usr/include/freetype2 -I/usr/include/libpng16
+CFLAGS   := -std=c11 $(FLAGS)
+CXXFLAGS := -std=c++17 $(FLAGS)
+CXXFLAGS += -Ilib/imgui -Ilib/imgui/backends
+CXXFLAGS += -DIMGUI_IMPL_OPENGL_LOADER_CUSTOM
+CXXFLAGS += -include glad/glad.h
+LDFLAGS  := -lm -lfreetype -g
 
 BIN := bin
 BUILD_DIR := build
@@ -19,6 +25,17 @@ BUILD_DIR := build
 SRC  := $(shell find src/ -type f -name '*.c')
 OBJ  := $(SRC:%=$(BUILD_DIR)/%.o)
 DEPS := $(SRC:%=$(BUILD_DIR)/%.d)
+
+CXX_SRC := $(shell find src/ -type f -name '*.cpp')
+CXX_OBJ := $(CXX_SRC:%.cpp=$(BUILD_DIR)/%.cpp.o)
+
+IMGUI_SRC := lib/imgui/imgui.cpp \
+             lib/imgui/imgui_draw.cpp \
+             lib/imgui/imgui_widgets.cpp \
+             lib/imgui/imgui_tables.cpp \
+             lib/imgui/backends/imgui_impl_glfw.cpp \
+             lib/imgui/backends/imgui_impl_opengl3.cpp
+IMGUI_OBJ := $(IMGUI_SRC:%.cpp=$(BUILD_DIR)/%.cpp.o)
 
 # libs
 GLFW := lib/glfw/src/libglfw3.a
@@ -30,6 +47,7 @@ OUT := $(BIN)/out
 
 ifdef WSL_DISTRO_NAME
 	CFLAGS += -DWSL
+	CXXFLAGS += -DWSL
 endif
 
 .PHONY: build run clean
@@ -39,13 +57,17 @@ run: $(OUT)
 
 build: $(OUT)
 
-$(OUT): $(OBJ) $(LIBS)
+$(OUT): $(OBJ) $(CXX_OBJ) $(IMGUI_OBJ) $(LIBS)
 	@mkdir -p $(dir $@)
-	$(CC) -o $(OUT) $(OBJ) $(LIBS) $(LDFLAGS)
+	$(CXX) -o $(OUT) $(OBJ) $(CXX_OBJ) $(IMGUI_OBJ) $(LIBS) $(LDFLAGS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) -o $@ -c $< $(CFLAGS)
+
+$(BUILD_DIR)/%.cpp.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 -include $(DEPS)
 
