@@ -32,6 +32,7 @@ struct item {
 
         void *data;     // Any item type specific data
 
+        void (*updateFn)(struct item*, float dt);
         void (*renderFn)(struct item, struct camera);
 };
 

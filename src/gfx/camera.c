@@ -10,7 +10,7 @@
 
 struct camera cam_init(void) {
         struct camera cam;
-        cam.pos = (vec3s){0.0f, 0.0f, 5.0f};
+        cam.pos = (vec3s){0.0f, 0.0f, 10.0f};
         cam.front = glms_normalize((vec3s){0.0f, 0.0f, -1.0f});
         cam.up = (vec3s){0.0f, 1.0f, 0.0f};
         cam.pitch = -45.0f;

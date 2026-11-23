@@ -22,7 +22,8 @@ struct renderer {
         struct item *items;
 };
 
-struct renderer ren_init(void);
+struct renderer render_init(void);
+void render_update(struct renderer *renderer, float dt);
 void render(struct renderer renderer);
 
 #endif

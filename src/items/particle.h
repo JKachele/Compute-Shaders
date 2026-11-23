@@ -10,13 +10,19 @@
 
 #include "item.h"
 
-struct particles {
+struct particleData {
         ivec3s count;
         int total;
-        vec4s *positions;
+        vec4s *pos;
+        vec4s *vel;
         uint posBuf;
+        uint velBuf;
 
         struct shader computeShader;
+
+        vec3s bhPos[2];
+        float bhAngle;
+        struct item blackHoles;
 };
 
 struct item item_particleInit(void);

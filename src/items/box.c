@@ -8,7 +8,13 @@
 
 #include "box.h"
 
-struct item box_init(void) {
+static void box_update(struct item *self, float dt) {
+        for (int i = 0; i < self->numCopies; i++) {
+                self->angle[i] += dt * 50;
+        }
+}
+
+struct item item_boxInit(void) {
         struct item box = {0};
 
         float vertices[] = {
@@ -91,6 +97,7 @@ struct item box_init(void) {
         box.hasEBO = false;
         box.mode = GL_TRIANGLES;
         box.count = 36;
+        box.updateFn = box_update;
         box.renderFn = item_render;
 
         // Compile and link shader programs

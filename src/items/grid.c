@@ -24,6 +24,7 @@ struct item item_gridInit(void) {
         grid.hasEBO = false;
         grid.mode = GL_TRIANGLES;
         grid.count = 36;
+        grid.updateFn = NULL;
         grid.renderFn = renderGrid;
 
         // Compile and link shader programs

@@ -19,7 +19,7 @@ extern float Pitch;
 int main(int argc, char *argv[]) {
         GLFWwindow *window = win_init("Hello Window", 800, 600);
 
-        struct renderer renderer = ren_init();
+        struct renderer renderer = render_init();
 
         // int x, y, z;
         // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &x);
@@ -45,6 +45,9 @@ int main(int argc, char *argv[]) {
 
                 // User Inputs
                 win_processInput(window, deltaTime, &renderer.camera);
+
+                // Update
+                render_update(&renderer, deltaTime);
 
                 // Rendering
                 render(renderer);
