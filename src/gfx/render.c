@@ -7,6 +7,7 @@
  ************************************************/
 
 #include "render.h"
+#include "font.h"
 #include "shader.h"
 #include "texture.h"
 
@@ -43,6 +44,9 @@ struct renderer render_init(void) {
         //         item_setState(box, i, cubePositions[i], 1.0f, 20.0f*i, (vec3s){1.0f, 0.3f, 0.5f});
         // }
 
+        // Initialize and generate font
+        renderer.font = font_init();
+
         // Enable Z-Buffer for Depth Testing
         glEnable(GL_DEPTH_TEST);
 
@@ -56,25 +60,35 @@ struct renderer render_init(void) {
         return renderer;
 }
 
-void render_update(struct renderer *renderer, float dt) {
-        for (int i = 0; i < renderer->numItems; i++) {
-                if (renderer->items[i].updateFn != NULL) {
-                        renderer->items[i].updateFn(&renderer->items[i], dt);
+void render_update(struct renderer *self, float dt) {
+        for (int i = 0; i < self->numItems; i++) {
+                if (self->items[i].updateFn != NULL) {
+                        self->items[i].updateFn(&self->items[i], dt);
                 }
         }
+        self->fps = 1.0f / dt;
+}
+
+static void render_fps(struct renderer self) {
+        char fps[10] = {0};
+        sprintf(fps, "%.0f FPS", self.fps);
+        font_render(self.font, fps, 25.0f, 25.0f, 0.5f, (vec3s){1.0, 1.0, 1.0},
+                        self.camera.winWidth, self.camera.winHeight);
 }
 
 // Render vertex and element objects using shaders
-void render(struct renderer renderer) {
+void render(struct renderer self) {
         // Clear previous buffer
         glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
         // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        for (int i = 0; i < renderer.numItems; i++) {
-                if (renderer.items[i].renderFn != NULL) {
-                        renderer.items[i].renderFn(renderer.items[i], renderer.camera);
+        for (int i = 0; i < self.numItems; i++) {
+                if (self.items[i].renderFn != NULL) {
+                        self.items[i].renderFn(self.items[i], self.camera);
                 }
         }
+
+        render_fps(self);
 }
 

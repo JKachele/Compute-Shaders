@@ -10,7 +10,8 @@ CFLAGS += -Wall -Wextra -Wpedantic
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-missing-braces
 CFLAGS += -Ilib/glad/include -Ilib/glfw/include -Ilib/stb
 CFLAGS += -Ilib/cglm/include -DCGLM_OMIT_NS_FROM_STRUCT_API
-LDFLAGS := -lm -g
+CFLAGS += -I/usr/include/freetype2 -I/usr/include/libpng16
+LDFLAGS := -lm -lfreetype -g
 
 BIN := bin
 BUILD_DIR := build

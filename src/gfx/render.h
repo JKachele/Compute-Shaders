@@ -9,8 +9,8 @@
 #define RENDER_H
 
 #include "../util.h"
-#include "texture.h"
 #include "camera.h"
+#include "font.h"
 #include "../items/item.h"
 #include "../items/box.h"
 #include "../items/grid.h"
@@ -20,11 +20,13 @@ struct renderer {
         struct camera camera;
         int numItems;
         struct item *items;
+        struct font font;
+        float fps;
 };
 
 struct renderer render_init(void);
-void render_update(struct renderer *renderer, float dt);
-void render(struct renderer renderer);
+void render_update(struct renderer *self, float dt);
+void render(struct renderer self);
 
 #endif
 

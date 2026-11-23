@@ -17,6 +17,8 @@
 #include <GLFW/glfw3.h>
 #include <cglm/cglm.h>
 #include <cglm/struct.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 typedef unsigned int  uint;
 typedef unsigned long ulong;
