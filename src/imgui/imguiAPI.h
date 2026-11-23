@@ -5,8 +5,8 @@
  *Created-------Wednesday Nov 23, 2026
  *License-------GNU GPL-3.0
  ************************************************/
-#ifndef IMGUI_BACKEND_H
-#define IMGUI_BACKEND_H
+#ifndef IMGUIAPI_H
+#define IMGUIAPI_H
 
 #include <GLFW/glfw3.h>
 
