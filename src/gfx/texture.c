@@ -46,13 +46,13 @@ static uint loadTexture(const char *filename, GLenum format, bool flip) {
         return texHandle;
 }
 
-struct texture textureInit(struct shader shader) {
+struct texture tex_init(struct shader shader) {
         struct texture texture;
         texture.numTextures = 1;
         texture.textures = malloc(texture.numTextures * sizeof(uint));
 
         texture.textures[0] = loadTexture(Container, GL_RGB, false);
-        shaderSetInt(shader, "tex0", 0);
+        shader_setInt(shader, "tex0", 0);
 
         // texture.textures[1] = loadTexture(Face, GL_RGBA, true);
         // shaderSetInt(shaderProgram, "tex1", 1);
@@ -60,7 +60,7 @@ struct texture textureInit(struct shader shader) {
         return texture;
 }
 
-void bindTextures(struct texture textures) {
+void tex_bind(struct texture textures) {
         GLenum units[] = {GL_TEXTURE0, GL_TEXTURE1, GL_TEXTURE2, GL_TEXTURE3};
         for (int i = 0; i < textures.numTextures; i++) {
                 glActiveTexture(units[i]);

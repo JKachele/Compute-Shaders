@@ -22,7 +22,7 @@ struct renderer {
         struct item *items;
 };
 
-struct renderer renderInit(void);
+struct renderer ren_init(void);
 void render(struct renderer renderer);
 
 #endif

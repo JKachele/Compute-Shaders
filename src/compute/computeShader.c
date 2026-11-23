@@ -9,14 +9,14 @@
 #include "computeShader.h"
 
 struct shader cs_init(const char *shaderPath) {
-        struct shader computeShader = shaderInit();
-        shaderAdd(&computeShader, shaderPath, GL_COMPUTE_SHADER);
-        shaderLink(&computeShader);
+        struct shader computeShader = shader_init();
+        shader_add(&computeShader, shaderPath, GL_COMPUTE_SHADER);
+        shader_link(&computeShader);
         return computeShader;
 }
 
 void cs_execute(struct shader cs, ivec3s groups, GLbitfield barriers) {
-        shaderUse(cs);
+        shader_use(cs);
         glDispatchCompute(groups.x, groups.y, groups.z);
         glMemoryBarrier(barriers);
 }

@@ -22,12 +22,12 @@ struct camera {
 };
 
 
-struct camera cameraInit(void);
-void cameraSet(struct camera *cam, vec3s pos, vec3s front, vec3s up);
-void cameraMove(struct camera *cam, direction dir, float speed);
-void cameraUpdate(struct camera *cam, float winWidth, float winHeight, float yaw, float pitch);
-mat4s cameraLookAt(struct camera cam);
-mat4s cameraProjection(struct camera cam);
+struct camera cam_init(void);
+void cam_set(struct camera *cam, vec3s pos, vec3s front, vec3s up);
+void cam_move(struct camera *cam, direction dir, float speed);
+void cam_update(struct camera *cam, float winWidth, float winHeight, float yaw, float pitch);
+mat4s cam_lookAt(struct camera cam);
+mat4s cam_projection(struct camera cam);
 
 #endif
 

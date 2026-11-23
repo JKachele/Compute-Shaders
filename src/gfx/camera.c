@@ -8,7 +8,7 @@
 
 #include "camera.h"
 
-struct camera cameraInit(void) {
+struct camera cam_init(void) {
         struct camera cam;
         cam.pos = (vec3s){0.0f, 0.0f, 5.0f};
         cam.front = glms_normalize((vec3s){0.0f, 0.0f, -1.0f});
@@ -21,13 +21,13 @@ struct camera cameraInit(void) {
         return cam;
 }
 
-void cameraSet(struct camera *cam, vec3s pos, vec3s front, vec3s up) {
+void cam_set(struct camera *cam, vec3s pos, vec3s front, vec3s up) {
         cam->pos = pos;
         cam->front = front;
         cam->up = up;
 }
 
-void cameraMove(struct camera *cam, direction dir, float speed) {
+void cam_move(struct camera *cam, direction dir, float speed) {
         vec3s camFront = cam->front;
         camFront.y = 0;
         camFront = glms_normalize(camFront);
@@ -67,16 +67,16 @@ static void cameraUpdateWindow(struct camera *cam, float winWidth, float winHeig
         cam->winWidth = winWidth;
 }
 
-void cameraUpdate(struct camera *cam, float winWidth, float winHeight, float yaw, float pitch) {
+void cam_update(struct camera *cam, float winWidth, float winHeight, float yaw, float pitch) {
         cameraUpdateWindow(cam, winWidth, winHeight);
         cameraUpdateAngle(cam, yaw, pitch);
 }
 
-mat4s cameraLookAt(struct camera cam) {
+mat4s cam_lookAt(struct camera cam) {
         return glms_lookat(cam.pos, vec3_add(cam.pos, cam.front), cam.up);
 }
 
-mat4s cameraProjection(struct camera cam) {
+mat4s cam_projection(struct camera cam) {
         return glms_perspective(glm_rad(cam.fov), cam.winWidth/cam.winHeight, 0.1f, 100.0f);
 }
 

@@ -36,10 +36,10 @@ struct item {
 };
 
 
-void itemSetNumCopies(struct item *self, int copies);
-void itemSetState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis);
-void itemSetDefault(struct item *self);
-void renderItem(struct item self, struct camera cam);
+void item_setNumCopies(struct item *self, int copies);
+void item_setState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis);
+void item_setDefault(struct item *self);
+void item_render(struct item self, struct camera cam);
 
 #endif
 

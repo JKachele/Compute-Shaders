@@ -17,9 +17,9 @@ extern float Yaw;
 extern float Pitch;
 
 int main(int argc, char *argv[]) {
-        GLFWwindow *window = windowInit("Hello Window", 800, 600);
+        GLFWwindow *window = win_init("Hello Window", 800, 600);
 
-        struct renderer renderer = renderInit();
+        struct renderer renderer = ren_init();
 
         // int x, y, z;
         // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &x);
@@ -41,10 +41,10 @@ int main(int argc, char *argv[]) {
                 lastFrame = currentFrame;
 
                 // Update Camera
-                cameraUpdate(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch);
+                cam_update(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch);
 
                 // User Inputs
-                processInput(window, deltaTime, &renderer.camera);
+                win_processInput(window, deltaTime, &renderer.camera);
 
                 // Rendering
                 render(renderer);

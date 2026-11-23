@@ -55,39 +55,39 @@ static void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
         if (Pitch < -89.0f) { Pitch = -89.0f; }
 }
 
-void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
         Speed += (float)yoffset;
         if (Speed < 2.5f) {
                 Speed = 2.5f;
         }
 }
 
-void processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
+void win_processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
         float camSpeed = Speed * deltaTime;
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
         }
         if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-                cameraMove(cam, FRONT, camSpeed);
+                cam_move(cam, FRONT, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-                cameraMove(cam, LEFT, camSpeed);
+                cam_move(cam, LEFT, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-                cameraMove(cam, BACK, camSpeed);
+                cam_move(cam, BACK, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-                cameraMove(cam, RIGHT, camSpeed);
+                cam_move(cam, RIGHT, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-                cameraMove(cam, UP, camSpeed);
+                cam_move(cam, UP, camSpeed);
         }
         if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-                cameraMove(cam, DOWN, camSpeed);
+                cam_move(cam, DOWN, camSpeed);
         }
 }
 
-GLFWwindow *windowInit(const char *title, int width, int height) {
+GLFWwindow *win_init(const char *title, int width, int height) {
         // Initialize glfw and set openGL Versions
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

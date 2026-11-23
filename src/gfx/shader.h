@@ -17,18 +17,18 @@ struct shader {
         uint program;
 };
 
-struct shader shaderInit(void);
-void shaderAdd(struct shader *self, const char *path, GLenum type);
-void shaderLink(struct shader *self);
-void shaderUse(struct shader self);
-void shaderDestroy(struct shader self);
+struct shader shader_init(void);
+void shader_add(struct shader *self, const char *path, GLenum type);
+void shader_link(struct shader *self);
+void shader_use(struct shader self);
+void shader_destroy(struct shader self);
 
-void shaderSetBool(struct shader self, const char *name, bool value);
-void shaderSetInt(struct shader self, const char *name, int value);
-void shaderSetFloat(struct shader self, const char *name, float value);
-void shaderSetVec3(struct shader self, const char *name, vec3s vec);
-void shaderSetVec4(struct shader self, const char *name, vec4s vec);
-void shaderSetMat4(struct shader self, const char *name, mat4s mat);
+void shader_setBool(struct shader self, const char *name, bool value);
+void shader_setInt(struct shader self, const char *name, int value);
+void shader_setFloat(struct shader self, const char *name, float value);
+void shader_setVec3(struct shader self, const char *name, vec3s vec);
+void shader_setVec4(struct shader self, const char *name, vec4s vec);
+void shader_setMat4(struct shader self, const char *name, mat4s mat);
 
 #endif
 

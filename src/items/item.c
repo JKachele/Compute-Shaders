@@ -8,7 +8,7 @@
 
 #include "item.h"
 
-void itemSetNumCopies(struct item *self, int copies) {
+void item_setNumCopies(struct item *self, int copies) {
         self->numCopies = copies;
         self->pos    = malloc(copies * sizeof(vec3s));
         self->size   = malloc(copies * sizeof(float));
@@ -16,16 +16,16 @@ void itemSetNumCopies(struct item *self, int copies) {
         self->axis = malloc(copies * sizeof(vec3s));
 }
 
-void itemSetState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis) {
+void item_setState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis) {
         self->pos[index] = pos;
         self->size[index] = scale;
         self->angle[index] = angle;
         self->axis[index] = axis;
 }
 
-void itemSetDefault(struct item *self) {
-        itemSetNumCopies(self, 1);
-        itemSetState(self, 0, (vec3s){0.0}, 1.0f, 0.0f, (vec3s){0.0});
+void item_setDefault(struct item *self) {
+        item_setNumCopies(self, 1);
+        item_setState(self, 0, (vec3s){0.0}, 1.0f, 0.0f, (vec3s){0.0});
 }
 
 static void transform(struct item item, int index, struct camera cam) {
@@ -35,23 +35,23 @@ static void transform(struct item item, int index, struct camera cam) {
         model = glms_translate(model, item.pos[index]);
         float angle = item.angle[index];
         model = glms_rotate(model, glm_rad(angle), item.axis[index]);
-        shaderSetMat4(item.shader, "model", model);
+        shader_setMat4(item.shader, "model", model);
 
         // View Matrix
-        mat4s view = cameraLookAt(cam);
-        shaderSetMat4(item.shader, "view", view);
+        mat4s view = cam_lookAt(cam);
+        shader_setMat4(item.shader, "view", view);
 
         // Projection Matrix
-        mat4s projection = cameraProjection(cam);
-        shaderSetMat4(item.shader, "projection", projection);
+        mat4s projection = cam_projection(cam);
+        shader_setMat4(item.shader, "projection", projection);
 }
 
-void renderItem(struct item self, struct camera cam) {
+void item_render(struct item self, struct camera cam) {
         // Attach shader program
-        shaderUse(self.shader);
+        shader_use(self.shader);
 
         // Bind Textures
-        bindTextures(self.textures);
+        tex_bind(self.textures);
 
         // Attach Vertex Array and Element Buffer
         glBindVertexArray(self.VAO);

@@ -47,7 +47,7 @@ static uint compile(const char *path, GLenum type) {
         return shaderHandle;
 }
 
-struct shader shaderInit(void) {
+struct shader shader_init(void) {
         struct shader shader;
         shader.numObjects = 0;
         shader.objectCap = 8;
@@ -56,7 +56,7 @@ struct shader shaderInit(void) {
         return shader;
 }
 
-void shaderAdd(struct shader *self, const char *path, GLenum type) {
+void shader_add(struct shader *self, const char *path, GLenum type) {
         self->numObjects++;
         if (self->numObjects > self->objectCap) {
                 self->objectCap += 8;
@@ -67,7 +67,7 @@ void shaderAdd(struct shader *self, const char *path, GLenum type) {
         glAttachShader(self->program, shaderObj);
 }
 
-void shaderLink(struct shader *self) {
+void shader_link(struct shader *self) {
         // Link all attached shader objects
         glLinkProgram(self->program);
 
@@ -99,37 +99,37 @@ void shaderLink(struct shader *self) {
         glUseProgram(self->program);
 }
 
-void shaderUse(struct shader self) {
+void shader_use(struct shader self) {
         glUseProgram(self.program);
 }
 
-void shaderDestroy(struct shader self) {
+void shader_destroy(struct shader self) {
         glDeleteProgram(self.program);
 }
 
-void shaderSetBool(struct shader self, const char *name, bool value) {
+void shader_setBool(struct shader self, const char *name, bool value) {
         glUniform1i(glGetUniformLocation(self.program, name), (int)value);
 }
 
-void shaderSetInt(struct shader self, const char *name, int value) {
+void shader_setInt(struct shader self, const char *name, int value) {
         glUniform1i(glGetUniformLocation(self.program, name), value);
 }
 
-void shaderSetFloat(struct shader self, const char *name, float value) {
+void shader_setFloat(struct shader self, const char *name, float value) {
         glUniform1f(glGetUniformLocation(self.program, name), value);
 }
 
-void shaderSetVec3(struct shader self, const char *name, vec3s vec) {
+void shader_setVec3(struct shader self, const char *name, vec3s vec) {
         uint location = glGetUniformLocation(self.program, name);
         glUniform3f(location, vec.x, vec.y, vec.z);
 }
 
-void shaderSetVec4(struct shader self, const char *name, vec4s vec) {
+void shader_setVec4(struct shader self, const char *name, vec4s vec) {
         uint location = glGetUniformLocation(self.program, name);
         glUniform4f(location, vec.x, vec.y, vec.z, vec.w);
 }
 
-void shaderSetMat4(struct shader self, const char *name, mat4s mat) {
+void shader_setMat4(struct shader self, const char *name, mat4s mat) {
         uint location = glGetUniformLocation(self.program, name);
         glUniformMatrix4fv(location, 1, GL_FALSE, (const GLfloat*)&mat.raw);
 }

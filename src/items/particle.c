@@ -13,6 +13,8 @@ static const char *VERTEX_SHADER = "assets/shaders/vert.vs.glsl";
 static const char *FRAGMENT_SHADER = "assets/shaders/color.fs.glsl";
 static const char *COMPUTE_SHADER = "assets/shaders/particles/part.cs.glsl";
 
+static void renderParticles(struct item self, struct camera cam);
+
 static void calcPositions(vec4s particles[], ivec3s numParticles) {
         vec4s p = {0.0f};
 
@@ -38,7 +40,7 @@ static void calcPositions(vec4s particles[], ivec3s numParticles) {
         }
 }
 
-struct item particleInit(void) {
+struct item item_particleInit(void) {
         struct item particle = {0};
         struct particles *particles = malloc(sizeof(struct particles));
         particle.data = particles;
@@ -85,25 +87,25 @@ struct item particleInit(void) {
         particles->computeShader = cs_init(COMPUTE_SHADER);
 
         // Compile and link shader programs
-        struct shader shader = shaderInit();
-        shaderAdd(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
-        shaderAdd(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
-        shaderLink(&shader);
+        struct shader shader = shader_init();
+        shader_add(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
+        shader_add(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shader_link(&shader);
         particle.shader = shader;
 
         return particle;
 }
 
-void renderParticles(struct item self, struct camera cam) {
+static void renderParticles(struct item self, struct camera cam) {
         struct particles parts = *(struct particles*)self.data;
         ivec3s groups = {parts.count.x/8, parts.count.y/8, parts.count.z/8};
         cs_execute(parts.computeShader, groups, GL_SHADER_STORAGE_BARRIER_BIT);
 
-        shaderUse(self.shader);
-        shaderSetVec4(self.shader, "color", (vec4s){0.0, 0.0, 0.0, 1.0});
+        shader_use(self.shader);
+        shader_setVec4(self.shader, "color", (vec4s){0.0, 0.0, 0.0, 1.0});
 
         glPointSize(2.0f);
 
-        renderItem(self, cam);
+        item_render(self, cam);
 }
 

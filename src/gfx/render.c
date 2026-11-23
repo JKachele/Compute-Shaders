@@ -11,7 +11,7 @@
 #include "texture.h"
 
 // Create all vertex and element objects and compile shaders
-struct renderer renderInit(void) {
+struct renderer ren_init(void) {
         struct renderer renderer;
 
         // Create 10 boxes
@@ -30,17 +30,17 @@ struct renderer renderInit(void) {
         renderer.numItems = 3;
         renderer.items = malloc(renderer.numItems * sizeof(struct item));
 
-        renderer.items[0] = gridInit();
-        itemSetDefault(&renderer.items[0]);
+        renderer.items[0] = item_gridInit();
+        item_setDefault(&renderer.items[0]);
 
-        renderer.items[1] = particleInit();
-        itemSetDefault(&renderer.items[1]);
+        renderer.items[1] = item_particleInit();
+        item_setDefault(&renderer.items[1]);
 
-        renderer.items[2] = boxInit();
-        itemSetNumCopies(&renderer.items[2], 10);
+        renderer.items[2] = item_boxInit();
+        item_setNumCopies(&renderer.items[2], 10);
         for (int i = 0; i < 10; i++) {
                 struct item *box = &renderer.items[2];
-                itemSetState(box, i, cubePositions[i], 1.0f, 20.0f*i, (vec3s){1.0f, 0.3f, 0.5f});
+                item_setState(box, i, cubePositions[i], 1.0f, 20.0f*i, (vec3s){1.0f, 0.3f, 0.5f});
         }
 
         // Enable Z-Buffer for Depth Testing
@@ -51,7 +51,7 @@ struct renderer renderInit(void) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         // Initalize camera
-        renderer.camera = cameraInit();
+        renderer.camera = cam_init();
 
         return renderer;
 }

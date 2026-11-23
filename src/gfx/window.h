@@ -11,8 +11,8 @@
 #include "../util.h"
 #include "camera.h"
 
-void processInput(GLFWwindow *window, float deltaTime, struct camera *cam);
-GLFWwindow *windowInit(const char *title, int width, int height);
+void win_processInput(GLFWwindow *window, float deltaTime, struct camera *cam);
+GLFWwindow *win_init(const char *title, int width, int height);
 
 #endif
 

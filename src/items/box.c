@@ -11,7 +11,7 @@
 static const char *VERTEX_SHADER = "assets/shaders/vert.vs.glsl";
 static const char *FRAGMENT_SHADER = "assets/shaders/tex.fs.glsl";
 
-struct item boxInit(void) {
+struct item box_init(void) {
         struct item box = {0};
 
         float vertices[] = {
@@ -94,17 +94,17 @@ struct item boxInit(void) {
         box.hasEBO = false;
         box.mode = GL_TRIANGLES;
         box.count = 36;
-        box.renderFn = renderItem;
+        box.renderFn = item_render;
 
         // Compile and link shader programs
-        struct shader shader = shaderInit();
-        shaderAdd(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
-        shaderAdd(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
-        shaderLink(&shader);
+        struct shader shader = shader_init();
+        shader_add(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
+        shader_add(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shader_link(&shader);
         box.shader = shader;
 
         // Load textures
-        struct texture textures = textureInit(shader);
+        struct texture textures = tex_init(shader);
         box.textures = textures;
 
         return box;

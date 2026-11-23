@@ -19,8 +19,7 @@ struct particles {
         struct shader computeShader;
 };
 
-struct item particleInit(void);
-void renderParticles(struct item self, struct camera cam);
+struct item item_particleInit(void);
 
 #endif
 

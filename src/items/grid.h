@@ -10,8 +10,7 @@
 
 #include "item.h"
 
-struct item gridInit(void);
-void renderGrid(struct item self, struct camera cam);
+struct item item_gridInit(void);
 
 #endif
 

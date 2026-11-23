@@ -16,8 +16,8 @@ struct texture {
         uint *textures;
 };
 
-struct texture textureInit(struct shader shader);
-void bindTextures(struct texture textures);
+struct texture tex_init(struct shader shader);
+void tex_bind(struct texture textures);
 
 #endif
 

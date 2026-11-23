@@ -11,7 +11,9 @@
 static const char *VERTEX_SHADER = "assets/shaders/grid/grid.vs.glsl";
 static const char *FRAGMENT_SHADER = "assets/shaders/grid/grid.fs.glsl";
 
-struct item gridInit(void) {
+static void renderGrid(struct item self, struct camera cam);
+
+struct item item_gridInit(void) {
         struct item grid = {0};
 
         uint VAO;
@@ -25,19 +27,19 @@ struct item gridInit(void) {
         grid.renderFn = renderGrid;
 
         // Compile and link shader programs
-        struct shader shader = shaderInit();
-        shaderAdd(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
-        shaderAdd(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
-        shaderLink(&shader);
+        struct shader shader = shader_init();
+        shader_add(&shader, VERTEX_SHADER, GL_VERTEX_SHADER);
+        shader_add(&shader, FRAGMENT_SHADER, GL_FRAGMENT_SHADER);
+        shader_link(&shader);
         grid.shader = shader;
 
         return grid;
 }
 
-void renderGrid(struct item self, struct camera cam) {
-        shaderUse(self.shader);
-        shaderSetVec3(self.shader, "cameraPos", cam.pos);
+static void renderGrid(struct item self, struct camera cam) {
+        shader_use(self.shader);
+        shader_setVec3(self.shader, "cameraPos", cam.pos);
 
-        renderItem(self, cam);
+        item_render(self, cam);
 }
 

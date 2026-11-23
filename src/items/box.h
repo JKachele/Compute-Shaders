@@ -10,7 +10,7 @@
 
 #include "item.h"
 
-struct item boxInit(void);
+struct item item_boxInit(void);
 
 #endif
 
