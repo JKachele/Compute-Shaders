@@ -7,6 +7,7 @@
  ************************************************/
 
 #include "font.h"
+#include "texture.h"
 
 static const char *JETBRAINSMONO = "assets/fonts/JetBrainsMonoNerdFont-Regular.ttf";
 static const char *VERTEX_SHADER = "assets/shaders/font/font.vs.glsl";

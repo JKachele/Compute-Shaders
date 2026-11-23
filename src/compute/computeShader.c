@@ -9,6 +9,16 @@
 #include "computeShader.h"
 
 struct shader cs_init(const char *shaderPath) {
+        // int x, y, z;
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &x);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &y);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &z);
+        // printf("X:%d, Y:%d, Z:%d\n", x, y, z);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &x);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &y);
+        // glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &z);
+        // printf("X:%d, Y:%d, Z:%d\n", x, y, z);
+
         struct shader computeShader = shader_init();
         shader_add(&computeShader, shaderPath, GL_COMPUTE_SHADER);
         shader_link(&computeShader);

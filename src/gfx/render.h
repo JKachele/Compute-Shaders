@@ -12,9 +12,6 @@
 #include "camera.h"
 #include "font.h"
 #include "../items/item.h"
-#include "../items/box.h"
-#include "../items/grid.h"
-#include "../items/particle.h"
 
 struct renderer {
         struct camera camera;
