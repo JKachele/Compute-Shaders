@@ -7,6 +7,7 @@
  ************************************************/
 
 #include "particle.h"
+#include "../compute/computeShader.h"
 
 static const char *VERTEX_SHADER = "assets/shaders/vert.vs.glsl";
 static const char *FRAGMENT_SHADER = "assets/shaders/color.fs.glsl";
@@ -74,15 +75,14 @@ struct item particleInit(void) {
         // Unbind VAO so other VAO calls wint modify this VAO
         glBindVertexArray(0);
 
+        // Set item rendering properties
         particle.hasEBO = false;
         particle.mode = GL_POINTS;
         particle.count = particles->total;
         particle.renderFn = renderParticles;
 
-        struct shader computeShader = shaderInit();
-        shaderAdd(&computeShader, COMPUTE_SHADER, GL_COMPUTE_SHADER);
-        shaderLink(&computeShader);
-        particles->computeShader = computeShader;
+        // Compile and link compute shader
+        particles->computeShader = cs_init(COMPUTE_SHADER);
 
         // Compile and link shader programs
         struct shader shader = shaderInit();
@@ -94,15 +94,10 @@ struct item particleInit(void) {
         return particle;
 }
 
-static void executeComputeShader(struct particles parts) {
-        shaderUse(parts.computeShader);
-        glDispatchCompute(parts.count.x/8, parts.count.y/8, parts.count.z/8);
-        glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-}
-
 void renderParticles(struct item self, struct camera cam) {
         struct particles parts = *(struct particles*)self.data;
-        executeComputeShader(parts);
+        ivec3s groups = {parts.count.x/8, parts.count.y/8, parts.count.z/8};
+        cs_execute(parts.computeShader, groups, GL_SHADER_STORAGE_BARRIER_BIT);
 
         shaderUse(self.shader);
         shaderSetVec4(self.shader, "color", (vec4s){0.0, 0.0, 0.0, 1.0});
