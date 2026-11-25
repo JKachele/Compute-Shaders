@@ -19,7 +19,10 @@ float WindowHeight = 720.0f;
 float ViewWidth;
 float ViewHeight;
 
-void imguiWidgets(struct renderer *renderer) {
+void imguiRender(struct renderer *renderer) {
+                imgui_newFrame();
+                imgui_showDemoWindow();
+
                 imgui_startRender();
 
                 imgui_text("FPS: %.1f", renderer->fps);
@@ -50,8 +53,6 @@ int main(int argc, char *argv[]) {
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
-                imgui_newFrame();
-
                 // Update Camera
                 cam_update(&renderer.camera, ViewWidth, ViewHeight, WindowWidth, WindowHeight);
 
@@ -65,7 +66,7 @@ int main(int argc, char *argv[]) {
                 render(renderer);
 
                 // Render ImGui on top
-                imguiWidgets(&renderer);
+                imguiRender(&renderer);
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);

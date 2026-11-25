@@ -59,9 +59,17 @@ void imgui_shutdown(void) {
         ImGui::DestroyContext();
 }
 
+void imgui_showDemoWindow(void) {
+        ImGui::ShowDemoWindow();
+}
+
 // Wigdets
 void imgui_seperator(void) {
         ImGui::Separator();
+}
+
+void imgui_seperatorText(const char *label) {
+        ImGui::SeparatorText(label);
 }
 
 void imgui_text(const char *fmt, ...) {

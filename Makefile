@@ -30,6 +30,7 @@ CXX_SRC := $(shell find src/ -type f -name '*.cpp')
 CXX_OBJ := $(CXX_SRC:%.cpp=$(BUILD_DIR)/%.cpp.o)
 
 IMGUI_SRC := lib/imgui/imgui.cpp \
+             lib/imgui/imgui_demo.cpp \
              lib/imgui/imgui_draw.cpp \
              lib/imgui/imgui_widgets.cpp \
              lib/imgui/imgui_tables.cpp \
