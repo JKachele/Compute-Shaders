@@ -14,8 +14,6 @@
 
 float WindowWidth  = 1280.0f;
 float WindowHeight = 720.0f;
-extern float Yaw;
-extern float Pitch;
 
 int main(int argc, char *argv[]) {
         GLFWwindow *window = win_init("Hello Window", WindowWidth, WindowHeight);
@@ -36,7 +34,7 @@ int main(int argc, char *argv[]) {
                 imgui_newFrame();
 
                 // Update Camera
-                cam_update(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch);
+                cam_update(&renderer.camera, WindowWidth, WindowHeight);
 
                 // User Inputs
                 win_processInput(window, deltaTime, &renderer.camera);
@@ -47,11 +45,6 @@ int main(int argc, char *argv[]) {
                 // Debug panel
                 struct imgui_data dbg = {
                         .fps = renderer.fps,
-                        .camX = renderer.camera.pos.x,
-                        .camY = renderer.camera.pos.y,
-                        .camZ = renderer.camera.pos.z,
-                        .yaw = Yaw,
-                        .pitch = Pitch,
                         .numItems = renderer.numItems,
                         .winWidth = WindowWidth,
                         .winHeight = WindowHeight,

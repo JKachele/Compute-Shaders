@@ -10,8 +10,6 @@
 #include "font.h"
 #include "shader.h"
 #include "texture.h"
-#include "../items/box.h"
-#include "../items/grid.h"
 #include "../items/particle.h"
 
 // Create all vertex and element objects and compile shaders
@@ -21,11 +19,8 @@ struct renderer render_init(void) {
         renderer.numItems = 3;
         renderer.items = calloc(renderer.numItems, sizeof(struct item));
 
-        renderer.items[0] = item_gridInit();
+        renderer.items[0] = item_particleInit();
         item_setDefault(&renderer.items[0]);
-
-        renderer.items[1] = item_particleInit();
-        item_setDefault(&renderer.items[1]);
 
         // renderer.items[2] = item_boxInit();
 

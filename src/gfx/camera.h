@@ -11,21 +11,13 @@
 #include "../util.h"
 
 struct camera {
-        vec3s pos;
-        vec3s front;
-        vec3s up;
-        float pitch;
-        float yaw;
-        float fov;
         float winWidth;
         float winHeight;
 };
 
 
 struct camera cam_init(void);
-void cam_set(struct camera *cam, vec3s pos, vec3s front, vec3s up);
-void cam_move(struct camera *cam, direction dir, float speed);
-void cam_update(struct camera *cam, float winWidth, float winHeight, float yaw, float pitch);
+void cam_update(struct camera *cam, float winWidth, float winHeight);
 mat4s cam_lookAt(struct camera cam);
 mat4s cam_projection(struct camera cam);
 

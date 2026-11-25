@@ -17,8 +17,6 @@ extern "C" {
 
 struct imgui_data {
         float fps;
-        float camX, camY, camZ;
-        float yaw, pitch;
         int   numItems;
         float winWidth, winHeight;
 };

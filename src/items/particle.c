@@ -27,9 +27,9 @@ static void calcPositions(vec4s pos[], vec4s vel[], ivec3s numParticles) {
         for (int x = 0; x < numParticles.x; x++) {
                 for (int y = 0; y < numParticles.y; y++) {
                         for (int z = 0; z < numParticles.z; z++) {
-                                p.x = randf(-1.0, 1.0);
-                                p.y = randf(-1.0, 1.0);
-                                p.z = randf(-1.0, 1.0);
+                                p.x = randf(-100.0, 100.0);
+                                p.y = randf(-100.0, 100.0);
+                                p.z = 0.0f;
                                 p.w = 1.0;
                                 pos[particleIndex] = p;
                                 vel[particleIndex] = vec4_zero();
@@ -178,10 +178,10 @@ struct item item_particleInit(void) {
         particle.shader = shader;
 
         // Create black holes
-        partData->bhPos[0] = (vec3s){ 3, 0, 0};
-        partData->bhPos[1] = (vec3s){-3, 0, 0};
-        partData->bhGrav[0] = 10.0f;
-        partData->bhGrav[1] = 10.0f;
+        partData->bhPos[0] = (vec3s){ 200, 0, 0};
+        partData->bhPos[1] = (vec3s){-200, 0, 0};
+        partData->bhGrav[0] = 10000.0f;
+        partData->bhGrav[1] = 10000.0f;
         partData->bhSpeed = 35.0f;
         partData->bhPointSize = 10.0f;
         partData->blackHoles = BlackHolesInit();

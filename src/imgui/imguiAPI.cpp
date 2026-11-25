@@ -20,6 +20,7 @@ void imgui_init(GLFWwindow *window) {
         ImGuiIO &io = ImGui::GetIO();
         (void)io;
         io.Fonts->AddFontDefaultVector(); // Always loads ProggyForever
+        io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
 
         ImGui::StyleColorsDark();
 
@@ -56,9 +57,6 @@ void imgui_shutdown(void) {
 void imgui_debugPanel(struct imgui_data *data) {
         ImGui::Begin("Debug Panel");
         ImGui::Text("FPS: %.1f", data->fps);
-        ImGui::Separator();
-        ImGui::Text("Camera Position: (%.2f, %.2f, %.2f)", data->camX, data->camY, data->camZ);
-        ImGui::Text("Yaw: %.1f  Pitch: %.1f", data->yaw, data->pitch);
         ImGui::Separator();
         ImGui::Text("Items: %d", data->numItems);
         ImGui::Text("Window: %.0fx%.0f", data->winWidth, data->winHeight);

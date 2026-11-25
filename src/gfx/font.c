@@ -98,7 +98,7 @@ void font_render(struct font self, const char *text, float x, float y, float siz
                 float winWidth, float winHeight) {
         shader_use(self.shader);
         shader_setVec3(self.shader, "textColor", color);
-        mat4s proj = glms_ortho(0.0, winWidth, 0.0, winHeight, -0.1, 0.1);
+        mat4s proj = glms_ortho(0.0, winWidth, 0.0, winHeight, -1.0, 1.0);
         shader_setMat4(self.shader, "projection", proj);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(self.VAO);

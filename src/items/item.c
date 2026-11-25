@@ -37,10 +37,6 @@ static void transform(struct item item, int index, struct camera cam) {
         model = glms_rotate(model, glm_rad(angle), item.axis[index]);
         shader_setMat4(item.shader, "model", model);
 
-        // View Matrix
-        mat4s view = cam_lookAt(cam);
-        shader_setMat4(item.shader, "view", view);
-
         // Projection Matrix
         mat4s projection = cam_projection(cam);
         shader_setMat4(item.shader, "projection", projection);

@@ -11,7 +11,7 @@ uniform float deltaT;
 
 const float PartMass = 0.1f;
 const float PartInvMass = 1.0 / PartMass;
-const float MaxDist = 45.0f;
+const float MaxDist = 1500.0f;
 
 layout (std430, binding=0) buffer pos {
         vec4 position[];
