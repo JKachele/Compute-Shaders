@@ -3,8 +3,8 @@
 layout (local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 uniform float deltaT;
-uniform float diffuseRate = 5;
-uniform float decayRate = 0.1;
+uniform float diffuseRate;
+uniform float decayRate;
 uniform ivec2 direction;
 
 layout(rgba32f, binding = 0) uniform image2D inputImg;

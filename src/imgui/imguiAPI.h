@@ -15,18 +15,17 @@
 extern "C" {
 #endif
 
-struct imgui_data {
-        float fps;
-        int   numItems;
-        float winWidth, winHeight;
-};
-
 void imgui_init(GLFWwindow *window);
 void imgui_setMouse(bool capture);
 void imgui_newFrame(void);
-void imgui_render(void);
+void imgui_startRender(void);
+void imgui_finishRender(void);
 void imgui_shutdown(void);
-void imgui_debugPanel(struct imgui_data *data);
+
+// Wigdets
+void imgui_seperator(void);
+void imgui_text(const char *fmt, ...);
+void imgui_dragFloat(const char *label, float *v, float speed, float min, float max);
 
 #ifdef __cplusplus
 }

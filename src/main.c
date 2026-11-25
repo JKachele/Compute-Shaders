@@ -10,6 +10,7 @@
 #include "util.h"
 #include "gfx/window.h"
 #include "gfx/render.h"
+#include "items/slime.h"
 #include "imgui/imguiAPI.h"
 
 float WindowWidth  = 1280.0f;
@@ -17,6 +18,19 @@ float WindowHeight = 720.0f;
 
 float ViewWidth;
 float ViewHeight;
+
+void imguiWidgets(struct renderer *renderer) {
+                imgui_startRender();
+
+                imgui_text("FPS: %.1f", renderer->fps);
+                imgui_seperator();
+                struct slimeData *slime = renderer->items[0].data;
+                imgui_dragFloat("Speed", &slime->speed, 1, 0, 1000);
+                imgui_dragFloat("Diffuse", &slime->diffuseRate, 0.01, 0, 20);
+                imgui_dragFloat("Decay", &slime->decayRate, 0.001, 0, 0.5);
+
+                imgui_finishRender();
+}
 
 int main(int argc, char *argv[]) {
         GLFWwindow *window = win_init("Hello Window", WindowWidth, WindowHeight);
@@ -36,7 +50,7 @@ int main(int argc, char *argv[]) {
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
-                // imgui_newFrame();
+                imgui_newFrame();
 
                 // Update Camera
                 cam_update(&renderer.camera, ViewWidth, ViewHeight, WindowWidth, WindowHeight);
@@ -47,20 +61,11 @@ int main(int argc, char *argv[]) {
                 // Update
                 render_update(&renderer, deltaTime);
 
-                // Debug panel
-                struct imgui_data dbg = {
-                        .fps = renderer.fps,
-                        .numItems = renderer.numItems,
-                        .winWidth = WindowWidth,
-                        .winHeight = WindowHeight,
-                };
-                // imgui_debugPanel(&dbg);
-
                 // Rendering
                 render(renderer);
 
                 // Render ImGui on top
-                // imgui_render();
+                imguiWidgets(&renderer);
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);

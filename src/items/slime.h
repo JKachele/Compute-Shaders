@@ -18,6 +18,8 @@ struct slimeData {
         uint posBuf;
 
         uint tempTexture;
+        float diffuseRate;
+        float decayRate;
 
         struct shader slimeCS;
         struct shader textureCS;

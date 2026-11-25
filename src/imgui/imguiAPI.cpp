@@ -43,7 +43,12 @@ void imgui_newFrame(void) {
         ImGui::NewFrame();
 }
 
-void imgui_render(void) {
+void imgui_startRender(void) {
+        ImGui::Begin("Debug Panel");
+}
+
+void imgui_finishRender(void) {
+        ImGui::End();
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -54,11 +59,19 @@ void imgui_shutdown(void) {
         ImGui::DestroyContext();
 }
 
-void imgui_debugPanel(struct imgui_data *data) {
-        ImGui::Begin("Debug Panel");
-        ImGui::Text("FPS: %.1f", data->fps);
+// Wigdets
+void imgui_seperator(void) {
         ImGui::Separator();
-        ImGui::Text("Items: %d", data->numItems);
-        ImGui::Text("Window: %.0fx%.0f", data->winWidth, data->winHeight);
-        ImGui::End();
 }
+
+void imgui_text(const char *fmt, ...) {
+        va_list args;
+        va_start(args, fmt);
+        ImGui::TextV(fmt, args);
+        va_end(args);
+}
+
+void imgui_dragFloat(const char *label, float *v, float speed, float min, float max) {
+        ImGui::DragFloat(label, v, speed, min, max);
+}
+

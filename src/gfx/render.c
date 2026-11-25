@@ -84,9 +84,9 @@ void render(struct renderer self) {
         }
 
         // Render FPS
-        char fps[10] = {0};
-        sprintf(fps, "%.0f FPS", self.fps);
-        font_render(self.font, fps, 10.0f, 10.0f, 15, (vec3s){1.0, 1.0, 1.0},
-                        self.camera.winWidth, self.camera.winHeight);
+        // char fps[10] = {0};
+        // sprintf(fps, "%.0f FPS", self.fps);
+        // font_render(self.font, fps, 10.0f, 10.0f, 15, (vec3s){1.0, 1.0, 1.0},
+        //                 self.camera.winWidth, self.camera.winHeight);
 }
 

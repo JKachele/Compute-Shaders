@@ -13,8 +13,8 @@
 static const char *SLIME_COMP_SHDR = "assets/shaders/slime/slime.cs.glsl";
 static const char *TEX_COMP_SHDR = "assets/shaders/slime/tex.cs.glsl";
 
-uint TexWidth = 1280;
-uint TexHeight = 720;
+const uint TEX_WIDTH  = 1280;
+const uint TEX_HEIGHT = 720;
 
 static float randf(float min, float max) {
         float r = (float)rand() / (float)RAND_MAX;
@@ -39,12 +39,15 @@ static void calcPositions(vec4s pos[], int numSlime, float maxDist) {
 
 static void blurTrails(struct slimeData *data, uint tex, float dt) {
         shader_use(data->textureCS);
-        ivec3s groups = {(TexWidth+15)/16, (TexHeight+15)/16, 1};
+        ivec3s groups = {(TEX_WIDTH+15)/16, (TEX_HEIGHT+15)/16, 1};
+
+        shader_setFloat(data->textureCS, "deltaT", dt);
+        shader_setFloat(data->textureCS, "diffuseRate", data->diffuseRate);
+        shader_setFloat(data->textureCS, "decayRate", data->decayRate);
 
         glBindImageTexture(0, tex, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
         glBindImageTexture(1, data->tempTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
         shader_setIVec2(data->textureCS, "direction", (ivec2s){1, 0});
-        shader_setFloat(data->textureCS, "deltaT", dt);
         cs_execute(data->textureCS, groups,
                         GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
 
@@ -106,7 +109,10 @@ struct item item_slimeInit(void) {
 
         data->pos = malloc(bufSize);
         calcPositions(data->pos, data->count, 100);
+
         data->speed = 50.0f;
+        data->diffuseRate = 5.0;
+        data->decayRate = 0.1;
 
         uint posBuf;
         glCreateBuffers(1, &posBuf);
@@ -165,8 +171,8 @@ struct item item_slimeInit(void) {
         data->slimeCS = cs_init(SLIME_COMP_SHDR);
         data->textureCS = cs_init(TEX_COMP_SHDR);
 
-        slime.textures = initTexture(TexWidth, TexHeight);
-        struct texture temp = initTexture(TexWidth, TexHeight);
+        slime.textures = initTexture(TEX_WIDTH, TEX_HEIGHT);
+        struct texture temp = initTexture(TEX_WIDTH, TEX_HEIGHT);
         data->tempTexture = temp.textures[0];
 
         return slime;
