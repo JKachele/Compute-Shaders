@@ -10,16 +10,19 @@
 #include "util.h"
 #include "gfx/window.h"
 #include "gfx/render.h"
+#include "imgui/imguiAPI.h"
 
-extern float WindowWidth;
-extern float WindowHeight;
+float WindowWidth  = 1280.0f;
+float WindowHeight = 720.0f;
 extern float Yaw;
 extern float Pitch;
 
 int main(int argc, char *argv[]) {
-        GLFWwindow *window = win_init("Hello Window", 800, 600);
+        GLFWwindow *window = win_init("Hello Window", WindowWidth, WindowHeight);
 
         struct renderer renderer = render_init();
+
+        imgui_init(window);
 
         float deltaTime = 0.0f; // Time between current and last frame
         float lastFrame = 0.0f; // Time of last frame
@@ -30,6 +33,8 @@ int main(int argc, char *argv[]) {
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
+                imgui_newFrame();
+
                 // Update Camera
                 cam_update(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch);
 
@@ -39,8 +44,25 @@ int main(int argc, char *argv[]) {
                 // Update
                 render_update(&renderer, deltaTime);
 
+                // Debug panel
+                struct imgui_data dbg = {
+                        .fps = renderer.fps,
+                        .camX = renderer.camera.pos.x,
+                        .camY = renderer.camera.pos.y,
+                        .camZ = renderer.camera.pos.z,
+                        .yaw = Yaw,
+                        .pitch = Pitch,
+                        .numItems = renderer.numItems,
+                        .winWidth = WindowWidth,
+                        .winHeight = WindowHeight,
+                };
+                imgui_debugPanel(&dbg);
+
                 // Rendering
                 render(renderer);
+
+                // Render ImGui on top
+                imgui_render();
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);
@@ -48,6 +70,7 @@ int main(int argc, char *argv[]) {
         }
 
         // Exit
+        imgui_shutdown();
         glfwTerminate();
         return 0;
 }

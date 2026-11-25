@@ -25,8 +25,7 @@ static uint compile(const char *path, GLenum type) {
         fseek(f, 0, SEEK_SET);
         char *shaderSource = calloc(1, len);
         assert(shaderSource != NULL);
-        fread(shaderSource, 1, len, f);
-        assert(strlen(shaderSource) > 0);
+        assert(fread(shaderSource, 1, len, f) > 0);
         fclose(f);
 
         // Attach source to handle and compile
