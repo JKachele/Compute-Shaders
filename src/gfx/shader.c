@@ -121,6 +121,12 @@ void shader_setFloat(struct shader self, const char *name, float value) {
         glUniform1f(glGetUniformLocation(self.program, name), value);
 }
 
+void shader_setIVec2(struct shader self, const char *name, ivec2s vec) {
+        shader_use(self);
+        uint location = glGetUniformLocation(self.program, name);
+        glUniform2i(location, vec.x, vec.y);
+}
+
 void shader_setVec3(struct shader self, const char *name, vec3s vec) {
         shader_use(self);
         uint location = glGetUniformLocation(self.program, name);

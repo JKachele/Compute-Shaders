@@ -17,9 +17,10 @@ struct slimeData {
         float pointSize;
         uint posBuf;
 
-        uint texturehandle;
+        uint tempTexture;
 
         struct shader slimeCS;
+        struct shader textureCS;
 
         struct item quad;
 };

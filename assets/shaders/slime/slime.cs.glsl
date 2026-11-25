@@ -20,7 +20,7 @@ layout (std430, binding=0) buffer slimeBuf {
         Slime slimes[];
 };
 
-layout(rgba32f, binding = 1) uniform image2D img;
+layout(rgba32f, binding = 0) uniform image2D img;
 
 // Hash function www.cs.ubc.ca/~rbridson/docs/schechter-sca08-turbulence.pdf
 uint hash(uint state) {

@@ -10,10 +10,11 @@
 #include "../compute/computeShader.h"
 #include "GLFW/glfw3.h"
 
-static const char *COMPUTE_SHADER = "assets/shaders/slime/slime.cs.glsl";
+static const char *SLIME_COMP_SHDR = "assets/shaders/slime/slime.cs.glsl";
+static const char *TEX_COMP_SHDR = "assets/shaders/slime/tex.cs.glsl";
 
-uint TexWidth = 320;
-uint TexHeight = 180;
+uint TexWidth = 1280;
+uint TexHeight = 720;
 
 static float randf(float min, float max) {
         float r = (float)rand() / (float)RAND_MAX;
@@ -36,17 +37,42 @@ static void calcPositions(vec4s pos[], int numSlime, float maxDist) {
         }
 }
 
+static void blurTrails(struct slimeData *data, uint tex, float dt) {
+        shader_use(data->textureCS);
+        ivec3s groups = {(TexWidth+15)/16, (TexHeight+15)/16, 1};
+
+        glBindImageTexture(0, tex, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+        glBindImageTexture(1, data->tempTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+        shader_setIVec2(data->textureCS, "direction", (ivec2s){1, 0});
+        shader_setFloat(data->textureCS, "deltaT", dt);
+        cs_execute(data->textureCS, groups,
+                        GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
+
+        glBindImageTexture(0, data->tempTexture, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+        glBindImageTexture(1, tex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+        shader_setIVec2(data->textureCS, "direction", (ivec2s){0, 1});
+        cs_execute(data->textureCS, groups,
+                        GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_TEXTURE_FETCH_BARRIER_BIT);
+}
+
 static void updateSlime(struct item *self, struct camera cam, float dt) {
         struct slimeData *data = (struct slimeData*)self->data;
 
+        // Difuse and fade out trails
+        blurTrails(data, self->textures.textures[0], dt);
+
+        shader_use(data->slimeCS);
         shader_setFloat(data->slimeCS, "deltaT", dt);
         shader_setFloat(data->slimeCS, "time", glfwGetTime());
         shader_setFloat(data->slimeCS, "speed", data->speed);
         shader_setVec4(data->slimeCS, "winSize", cam.viewSize);
+        glBindImageTexture(0, self->textures.textures[0], 0, GL_FALSE, 0,
+                        GL_READ_WRITE, GL_RGBA32F);
 
         // Execute compute shader
         ivec3s groups = {data->count, 1, 1};
-        cs_execute(data->slimeCS, groups, GL_SHADER_STORAGE_BARRIER_BIT);
+        cs_execute(data->slimeCS, groups,
+                        GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
         // Update quad
         self->scale[0] = (vec3s){cam.viewWidth, cam.viewHeight, 1.0};
@@ -75,12 +101,12 @@ struct item item_slimeInit(void) {
         struct slimeData *data = malloc(sizeof(struct slimeData));
         slime.data = data;
 
-        data->count = 25;
+        data->count = 25000;
         GLuint bufSize = data->count * sizeof(vec4s);
 
         data->pos = malloc(bufSize);
         calcPositions(data->pos, data->count, 100);
-        data->speed = 100.0f;
+        data->speed = 50.0f;
 
         uint posBuf;
         glCreateBuffers(1, &posBuf);
@@ -136,11 +162,12 @@ struct item item_slimeInit(void) {
         slime.shader = shader;
 
         // Compile and link compute shader
-        data->slimeCS = cs_init(COMPUTE_SHADER);
+        data->slimeCS = cs_init(SLIME_COMP_SHDR);
+        data->textureCS = cs_init(TEX_COMP_SHDR);
 
         slime.textures = initTexture(TexWidth, TexHeight);
-        glBindImageTexture(1, slime.textures.textures[0],
-                        0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+        struct texture temp = initTexture(TexWidth, TexHeight);
+        data->tempTexture = temp.textures[0];
 
         return slime;
 }

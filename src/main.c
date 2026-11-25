@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
-                imgui_newFrame();
+                // imgui_newFrame();
 
                 // Update Camera
                 cam_update(&renderer.camera, ViewWidth, ViewHeight, WindowWidth, WindowHeight);
@@ -54,13 +54,13 @@ int main(int argc, char *argv[]) {
                         .winWidth = WindowWidth,
                         .winHeight = WindowHeight,
                 };
-                imgui_debugPanel(&dbg);
+                // imgui_debugPanel(&dbg);
 
                 // Rendering
                 render(renderer);
 
                 // Render ImGui on top
-                imgui_render();
+                // imgui_render();
 
                 // Display the buffer to the window and check/call events
                 glfwSwapBuffers(window);

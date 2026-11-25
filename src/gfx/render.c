@@ -27,7 +27,7 @@ struct renderer render_init(float winWidth, float winHeight) {
         renderer.font = font_init();
 
         // Enable Z-Buffer for Depth Testing
-        glEnable(GL_DEPTH_TEST);
+        // glEnable(GL_DEPTH_TEST);
 
         // Enable blending
         glEnable(GL_BLEND);
