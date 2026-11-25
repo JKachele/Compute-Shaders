@@ -21,7 +21,7 @@ struct renderer {
         float fps;
 };
 
-struct renderer render_init(void);
+struct renderer render_init(float winWidth, float winHeight);
 void render_update(struct renderer *self, float dt);
 void render(struct renderer self);
 

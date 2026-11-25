@@ -20,6 +20,9 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#define PI  3.14159265358979323846
+#define PI2 6.28318530717958647693
+
 typedef unsigned int  uint;
 typedef unsigned long ulong;
 

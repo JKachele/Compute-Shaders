@@ -15,10 +15,15 @@
 float WindowWidth  = 1280.0f;
 float WindowHeight = 720.0f;
 
+float ViewWidth;
+float ViewHeight;
+
 int main(int argc, char *argv[]) {
         GLFWwindow *window = win_init("Hello Window", WindowWidth, WindowHeight);
+        ViewWidth = WindowWidth;
+        ViewHeight = WindowHeight;
 
-        struct renderer renderer = render_init();
+        struct renderer renderer = render_init(WindowWidth, WindowHeight);
 
         imgui_init(window);
 
@@ -34,7 +39,7 @@ int main(int argc, char *argv[]) {
                 imgui_newFrame();
 
                 // Update Camera
-                cam_update(&renderer.camera, WindowWidth, WindowHeight);
+                cam_update(&renderer.camera, ViewWidth, ViewHeight, WindowWidth, WindowHeight);
 
                 // User Inputs
                 win_processInput(window, deltaTime, &renderer.camera);

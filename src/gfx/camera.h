@@ -13,11 +13,15 @@
 struct camera {
         float winWidth;
         float winHeight;
+        float viewWidth;
+        float viewHeight;
+        vec4s viewSize;
 };
 
 
-struct camera cam_init(void);
-void cam_update(struct camera *cam, float winWidth, float winHeight);
+struct camera cam_init(float width, float height);
+void cam_update(struct camera *cam, float viewWidth, float viewHeight,
+                float winWidth, float winHeight);
 mat4s cam_lookAt(struct camera cam);
 mat4s cam_projection(struct camera cam);
 

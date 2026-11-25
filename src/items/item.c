@@ -11,27 +11,27 @@
 void item_setNumCopies(struct item *self, int copies) {
         self->numCopies = copies;
         self->pos    = malloc(copies * sizeof(vec3s));
-        self->size   = malloc(copies * sizeof(float));
+        self->scale   = malloc(copies * sizeof(float));
         self->angle  = malloc(copies * sizeof(float));
         self->axis = malloc(copies * sizeof(vec3s));
 }
 
-void item_setState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis) {
+void item_setState(struct item *self, int index, vec3s pos, vec3s scale, float angle, vec3s axis) {
         self->pos[index] = pos;
-        self->size[index] = scale;
+        self->scale[index] = scale;
         self->angle[index] = angle;
         self->axis[index] = axis;
 }
 
 void item_setDefault(struct item *self) {
         item_setNumCopies(self, 1);
-        item_setState(self, 0, (vec3s){0.0}, 1.0f, 0.0f, (vec3s){0.0});
+        item_setState(self, 0, vec3_zero(), vec3_one(), 0.0f, vec3_zero());
 }
 
 static void transform(struct item item, int index, struct camera cam) {
         // Model Matrix
         mat4s model = mat4_identity();
-        model = glms_scale_uni(model, item.size[index]);
+        model = glms_scale(model, item.scale[index]);
         model = glms_translate(model, item.pos[index]);
         float angle = item.angle[index];
         model = glms_rotate(model, glm_rad(angle), item.axis[index]);

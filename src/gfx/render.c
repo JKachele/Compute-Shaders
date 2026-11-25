@@ -11,18 +11,17 @@
 #include "shader.h"
 #include "texture.h"
 #include "../items/particle.h"
+#include "../items/slime.h"
 
 // Create all vertex and element objects and compile shaders
-struct renderer render_init(void) {
+struct renderer render_init(float winWidth, float winHeight) {
         struct renderer renderer;
 
-        renderer.numItems = 3;
+        renderer.numItems = 1;
         renderer.items = calloc(renderer.numItems, sizeof(struct item));
 
-        renderer.items[0] = item_particleInit();
+        renderer.items[0] = item_slimeInit();
         item_setDefault(&renderer.items[0]);
-
-        // renderer.items[2] = item_boxInit();
 
         // Initialize and generate font
         renderer.font = font_init();
@@ -35,7 +34,7 @@ struct renderer render_init(void) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         // Initalize camera
-        renderer.camera = cam_init();
+        renderer.camera = cam_init(winWidth, winHeight);
 
         return renderer;
 }
@@ -64,7 +63,7 @@ static float calcFPS(float dt) {
 void render_update(struct renderer *self, float dt) {
         for (int i = 0; i < self->numItems; i++) {
                 if (self->items[i].updateFn != NULL) {
-                        self->items[i].updateFn(&self->items[i], dt);
+                        self->items[i].updateFn(&self->items[i], self->camera, dt);
                 }
         }
         self->fps = calcFPS(dt);
@@ -73,7 +72,8 @@ void render_update(struct renderer *self, float dt) {
 // Render vertex and element objects using shaders
 void render(struct renderer self) {
         // Clear previous buffer
-        glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
+        // glClearColor(0.07f, 0.3f, 0.7f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Render items

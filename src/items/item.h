@@ -26,19 +26,19 @@ struct item {
 
         int numCopies;
         vec3s *pos;
-        float *size;
+        vec3s *scale;
         float *angle;
         vec3s *axis;
 
         void *data;     // Any item type specific data
 
-        void (*updateFn)(struct item*, float dt);
+        void (*updateFn)(struct item*, struct camera, float dt);
         void (*renderFn)(struct item, struct camera);
 };
 
 
 void item_setNumCopies(struct item *self, int copies);
-void item_setState(struct item *self, int index, vec3s pos, float scale, float angle, vec3s axis);
+void item_setState(struct item *self, int index, vec3s pos, vec3s scale, float angle, vec3s axis);
 void item_setDefault(struct item *self);
 void item_render(struct item self, struct camera cam);
 

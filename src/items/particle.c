@@ -8,7 +8,6 @@
 
 #include "particle.h"
 #include "../compute/computeShader.h"
-#include "cglm/struct/mat4.h"
 
 static const char *COMPUTE_SHADER = "assets/shaders/particles/part.cs.glsl";
 
@@ -90,7 +89,7 @@ static void updateBlackHoles(struct particleData *data, float dt) {
         bh.pos[1] = data->bhPos[1];
 }
 
-static void updateParticles(struct item *self, float dt) {
+static void updateParticles(struct item *self, struct camera cam, float dt) {
         struct particleData *parts = (struct particleData*)self->data;
         updateBlackHoles(parts, dt);
 
@@ -188,8 +187,8 @@ struct item item_particleInit(void) {
         partData->blackHoles.shader = particle.shader;
         item_setDefault(&partData->blackHoles);
         item_setNumCopies(&partData->blackHoles, 2);
-        item_setState(&partData->blackHoles, 0, partData->bhPos[0], 1.0f, 0, vec3_zero());
-        item_setState(&partData->blackHoles, 1, partData->bhPos[1], 1.0f, 0, vec3_zero());
+        item_setState(&partData->blackHoles, 0, partData->bhPos[0], vec3_one(), 0, vec3_zero());
+        item_setState(&partData->blackHoles, 1, partData->bhPos[1], vec3_one(), 0, vec3_zero());
 
         return particle;
 }
