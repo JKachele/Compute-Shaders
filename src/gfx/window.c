@@ -17,8 +17,8 @@
 #define CURSOR_MODE GLFW_CURSOR_DISABLED
 #endif
 
-float WindowWidth  = 800.0f;
-float WindowHeight = 600.0f;
+extern float WindowWidth;
+extern float WindowHeight;
 float Yaw   = -90.0f;
 float Pitch = 0.0f;
 
@@ -41,8 +41,8 @@ static void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
         }
 
         // Store last mouse position
-        static float lastX = 400;
-        static float lastY = 300;
+        static float lastX = 0.0;
+        static float lastY = 0.0;
 
         // Set last position to current if mouse first entered window
         // Prevents large movement jump when first entering
@@ -140,7 +140,7 @@ GLFWwindow *win_init(const char *title, int width, int height) {
         }
 
         // Set OpenGL's viewport (Screen size)
-        glViewport(0, 0, 800, 600);
+        glViewport(0, 0, width, height);
 
         // Give glfw the callback function if the window size changes
         glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);

@@ -9,6 +9,7 @@
 #define IMGUIAPI_H
 
 #include <GLFW/glfw3.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {

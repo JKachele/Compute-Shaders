@@ -12,13 +12,13 @@
 #include "gfx/render.h"
 #include "imgui/imguiAPI.h"
 
-extern float WindowWidth;
-extern float WindowHeight;
+float WindowWidth  = 1280.0f;
+float WindowHeight = 720.0f;
 extern float Yaw;
 extern float Pitch;
 
 int main(int argc, char *argv[]) {
-        GLFWwindow *window = win_init("Hello Window", 800, 600);
+        GLFWwindow *window = win_init("Hello Window", WindowWidth, WindowHeight);
 
         struct renderer renderer = render_init();
 

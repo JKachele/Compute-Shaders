@@ -6,8 +6,7 @@
 
 CC       := gcc
 CXX      := g++
-FLAGS    := -g -MMD
-FLAGS    += -Wall -Wextra -Wpedantic 
+FLAGS    := -O3 -MMD -Wall -Wextra -Wpedantic 
 FLAGS    += -Wno-unused-parameter -Wno-unused-variable -Wno-missing-braces
 FLAGS    += -Ilib/glad/include -Ilib/glfw/include -Ilib/stb
 FLAGS    += -Ilib/cglm/include -DCGLM_OMIT_NS_FROM_STRUCT_API
@@ -21,6 +20,7 @@ LDFLAGS  := -lm -lfreetype -g
 
 BIN := bin
 BUILD_DIR := build
+BUILD_IMGUI := lib/imgui/build
 
 SRC  := $(shell find src/ -type f -name '*.c')
 OBJ  := $(SRC:%=$(BUILD_DIR)/%.o)
@@ -35,7 +35,7 @@ IMGUI_SRC := lib/imgui/imgui.cpp \
              lib/imgui/imgui_tables.cpp \
              lib/imgui/backends/imgui_impl_glfw.cpp \
              lib/imgui/backends/imgui_impl_opengl3.cpp
-IMGUI_OBJ := $(IMGUI_SRC:%.cpp=$(BUILD_DIR)/%.cpp.o)
+IMGUI_OBJ := $(IMGUI_SRC:%.cpp=$(BUILD_IMGUI)/%.cpp.o)
 
 # libs
 GLFW := lib/glfw/src/libglfw3.a
@@ -66,6 +66,10 @@ $(BUILD_DIR)/%.c.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(BUILD_DIR)/%.cpp.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) -o $@ -c $< $(CXXFLAGS)
+
+$(BUILD_IMGUI)/%.cpp.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
