@@ -19,6 +19,7 @@ void imgui_init(GLFWwindow *window) {
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
         (void)io;
+        io.Fonts->AddFontDefaultVector(); // Always loads ProggyForever
 
         ImGui::StyleColorsDark();
 
@@ -26,7 +27,16 @@ void imgui_init(GLFWwindow *window) {
         ImGui_ImplOpenGL3_Init("#version 450");
 }
 
-void imgui_new_frame(void) {
+void imgui_setMouse(bool capture) {
+        ImGuiIO &io = ImGui::GetIO();
+        if (capture) {
+                io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+        } else {
+                io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
+        }
+}
+
+void imgui_newFrame(void) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -43,7 +53,7 @@ void imgui_shutdown(void) {
         ImGui::DestroyContext();
 }
 
-void imgui_debug_panel(struct debug_data *data) {
+void imgui_debugPanel(struct imgui_data *data) {
         ImGui::Begin("Debug Panel");
         ImGui::Text("FPS: %.1f", data->fps);
         ImGui::Separator();

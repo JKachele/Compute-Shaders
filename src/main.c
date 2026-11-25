@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
-                imgui_new_frame();
+                imgui_newFrame();
 
                 // Update Camera
                 cam_update(&renderer.camera, WindowWidth, WindowHeight, Yaw, Pitch);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
                 render_update(&renderer, deltaTime);
 
                 // Debug panel
-                struct debug_data dbg = {
+                struct imgui_data dbg = {
                         .fps = renderer.fps,
                         .camX = renderer.camera.pos.x,
                         .camY = renderer.camera.pos.y,
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
                         .winWidth = WindowWidth,
                         .winHeight = WindowHeight,
                 };
-                imgui_debug_panel(&dbg);
+                imgui_debugPanel(&dbg);
 
                 // Rendering
                 render(renderer);

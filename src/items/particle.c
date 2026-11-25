@@ -119,7 +119,7 @@ struct item item_particleInit(void) {
         struct particleData *partData = malloc(sizeof(struct particleData));
         particle.data = partData;
 
-        partData->count = (ivec3s){64, 64, 64};
+        partData->count = (ivec3s){128, 128, 128};
         partData->total = partData->count.x * partData->count.y * partData->count.z;
 
         GLuint bufSize = partData->total * sizeof(vec4s);
@@ -164,7 +164,7 @@ struct item item_particleInit(void) {
         particle.count = partData->total;
         particle.updateFn = updateParticles;
         particle.renderFn = renderParticles;
-        partData->pointSize = 1.5f;
+        partData->pointSize = 3.0f;
 
         // Compile and link compute shader
         partData->computeShader = cs_init(COMPUTE_SHADER);

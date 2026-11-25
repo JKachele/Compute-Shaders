@@ -9,6 +9,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "window.h"
+#include "../imgui/imguiAPI.h"
+
+#ifdef WSL
+#define CURSOR_MODE GLFW_CURSOR_HIDDEN
+#else
+#define CURSOR_MODE GLFW_CURSOR_DISABLED
+#endif
 
 float WindowWidth  = 800.0f;
 float WindowHeight = 600.0f;
@@ -16,6 +23,8 @@ float Yaw   = -90.0f;
 float Pitch = 0.0f;
 
 static float Speed = 2.5f;
+static bool MouseCapture = true;
+static bool FirstMouse = true;
 
 
 static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -27,17 +36,20 @@ static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 static void mouseCallback(GLFWwindow *window, double xPos, double yPos) {
         const float Sensitivity = 0.1f;
 
+        if (!MouseCapture) {
+                return;
+        }
+
         // Store last mouse position
         static float lastX = 400;
         static float lastY = 300;
-        static bool firstMouse = true;
 
         // Set last position to current if mouse first entered window
         // Prevents large movement jump when first entering
-        if (firstMouse) {
+        if (FirstMouse) {
                 lastX = xPos;
                 lastY = yPos;
-                firstMouse = false;
+                FirstMouse = false;
         }
 
         // Calculate mouse offsets
@@ -62,28 +74,44 @@ static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
         }
 }
 
+static void toggleMouse(GLFWwindow* window) {
+        MouseCapture = !MouseCapture;
+
+        if (MouseCapture) {
+                glfwSetInputMode(window, GLFW_CURSOR, CURSOR_MODE);
+                imgui_setMouse(false);
+                FirstMouse = true;
+        } else {
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                imgui_setMouse(true);
+        }
+}
+
 void win_processInput(GLFWwindow *window, float deltaTime, struct camera *cam) {
         float camSpeed = Speed * deltaTime;
-        if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
         }
-        if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
                 cam_move(cam, FRONT, camSpeed);
         }
-        if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
                 cam_move(cam, LEFT, camSpeed);
         }
-        if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
                 cam_move(cam, BACK, camSpeed);
         }
-        if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
                 cam_move(cam, RIGHT, camSpeed);
         }
-        if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
                 cam_move(cam, UP, camSpeed);
         }
-        if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
                 cam_move(cam, DOWN, camSpeed);
+        }
+        if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
+                toggleMouse(window);
         }
 }
 
@@ -120,11 +148,7 @@ GLFWwindow *win_init(const char *title, int width, int height) {
         // Hide the cusor and capture its position
         glfwSetCursorPosCallback(window, mouseCallback);
         glfwSetScrollCallback(window, scrollCallback);
-#ifdef WSL
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-#else
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-#endif
+        glfwSetInputMode(window, GLFW_CURSOR, CURSOR_MODE);
 
         return window;
 }

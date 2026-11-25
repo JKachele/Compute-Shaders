@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-struct debug_data {
+struct imgui_data {
         float fps;
         float camX, camY, camZ;
         float yaw, pitch;
@@ -23,10 +23,11 @@ struct debug_data {
 };
 
 void imgui_init(GLFWwindow *window);
-void imgui_new_frame(void);
+void imgui_setMouse(bool capture);
+void imgui_newFrame(void);
 void imgui_render(void);
 void imgui_shutdown(void);
-void imgui_debug_panel(struct debug_data *data);
+void imgui_debugPanel(struct imgui_data *data);
 
 #ifdef __cplusplus
 }
